@@ -231,7 +231,7 @@ company.name_c?.toLowerCase().includes(query) ||
                   </div>
                   <div>
                     <h3 className="font-semibold text-slate-900 group-hover:text-primary transition-colors">
-                      {company.Name}
+{company.name_c}
                     </h3>
                     <Badge variant={company.status_c === 'Active' ? 'success' : 'secondary'}>
                       {company.industry_c || 'No Industry'}

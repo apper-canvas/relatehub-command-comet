@@ -34,13 +34,13 @@ const QuickAddModal = ({ isOpen, onClose, activeTab: initialActiveTab = "contact
     description: ""
 });
 
-  const [companyForm, setCompanyForm] = useState({
-    Name: "",
-    Industry: "",
-    Website: "",
-    Size: "",
-    Revenue: "",
-    Status: "Active"
+const [companyForm, setCompanyForm] = useState({
+    name_c: "",
+    industry_c: "",
+    website_c: "",
+    size_c: "",
+    revenue_c: "",
+    status_c: "Active"
   });
 
   const resetForms = () => {
