@@ -7,7 +7,7 @@ import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
 import FormField from "@/components/molecules/FormField";
 
-const QuickAddModal = ({ isOpen, onClose, activeTab: initialActiveTab = "contact", onSuccess }) => {
+const QuickAddModal = ({ isOpen, onClose, activeTab: initialActiveTab = "contact", onSuccess, editData = null, editMode = false }) => {
   const [activeTab, setActiveTab] = useState(initialActiveTab);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [contactForm, setContactForm] = useState({
@@ -20,12 +20,12 @@ const QuickAddModal = ({ isOpen, onClose, activeTab: initialActiveTab = "contact
   });
 
   const [dealForm, setDealForm] = useState({
-    contactId: "",
-    title: "",
-    value: "",
-    probability: "50",
-stage: "Lead",
-    notes: ""
+    contactId: editData?.contact_id_c?.Id || editData?.contact_id_c || "",
+    title: editData?.title_c || "",
+    value: editData?.value_c || "",
+    probability: editData?.probability_c || "50",
+    stage: editData?.stage_c || "Lead",
+    notes: editData?.notes_c || ""
   });
 
   const [activityForm, setActivityForm] = useState({
@@ -44,7 +44,7 @@ const [companyForm, setCompanyForm] = useState({
     status_c: "Active"
   });
 
-  const resetForms = () => {
+const resetForms = () => {
     setContactForm({
       firstName: "",
       lastName: "",
@@ -57,7 +57,7 @@ const [companyForm, setCompanyForm] = useState({
       contactId: "",
       title: "",
       value: "",
-probability: "50", 
+      probability: "50", 
       stage: "Lead",
       notes: ""
     });
@@ -66,7 +66,7 @@ probability: "50",
       type: "call",
       subject: "",
       description: ""
-});
+    });
   };
 
   const handleCompanyChange = (e) => {
@@ -82,16 +82,25 @@ const handleSubmit = async (e) => {
     setIsSubmitting(true);
 
     try {
-if (activeTab === "contact") {
+      if (activeTab === "contact") {
         await contactService.create(contactForm);
         toast.success("Contact created successfully!");
       } else if (activeTab === "deal") {
-        await dealService.create({
-          ...dealForm,
-          value_c: parseFloat(dealForm.value) || 0,
-          probability_c: parseInt(dealForm.probability)
-        });
-        toast.success("Deal created successfully!");
+        if (editMode && editData) {
+          await dealService.update(editData.Id, {
+            ...dealForm,
+            value_c: parseFloat(dealForm.value) || 0,
+            probability_c: parseInt(dealForm.probability)
+          });
+          toast.success("Deal updated successfully!");
+        } else {
+          await dealService.create({
+            ...dealForm,
+            value_c: parseFloat(dealForm.value) || 0,
+            probability_c: parseInt(dealForm.probability)
+          });
+          toast.success("Deal created successfully!");
+        }
       } else if (activeTab === "activity") {
         await activityService.create(activityForm);
         toast.success("Activity logged successfully!");
@@ -106,7 +115,7 @@ if (activeTab === "contact") {
       resetForms();
       onClose();
     } catch (error) {
-      toast.error("Failed to create item. Please try again.");
+      toast.error(editMode && activeTab === "deal" ? "Failed to update deal. Please try again." : "Failed to create item. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -145,10 +154,10 @@ if (!isOpen) return null;
                 className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full pointer-events-auto"
               >
                 <div className="px-6 py-5">
-                  {/* Header */}
+{/* Header */}
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-semibold text-slate-900">
-                      Quick Add
+                      {editMode && activeTab === "deal" ? "Edit Deal" : "Quick Add"}
                     </h3>
                     <button
                       onClick={onClose}
@@ -417,7 +426,7 @@ if (!isOpen) return null;
                       >
                         Cancel
                       </Button>
-                      <Button
+<Button
                         type="submit"
                         disabled={isSubmitting}
                         className="flex items-center gap-2"
@@ -425,7 +434,7 @@ if (!isOpen) return null;
                         {isSubmitting && (
                           <ApperIcon name="Loader2" className="w-4 h-4 animate-spin" />
                         )}
-                        Create
+                        {editMode && activeTab === "deal" ? "Update" : "Create"}
                       </Button>
                     </div>
                   </form>

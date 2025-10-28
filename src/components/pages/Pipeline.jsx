@@ -10,13 +10,14 @@ import Empty from "@/components/ui/Empty";
 import Error from "@/components/ui/Error";
 
 const Pipeline = () => {
-const [deals, setDeals] = useState([]);
+  const [deals, setDeals] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
-
+  const [editingDeal, setEditingDeal] = useState(null);
   const handleAddDeal = () => {
+    setEditingDeal(null);
     setIsQuickAddOpen(true);
   };
 
@@ -88,9 +89,9 @@ const handleStageChange = async (dealId, newStage) => {
     return stageDeals.reduce((sum, deal) => sum + (deal.value_c || 0), 0);
   };
 
-  const handleEditDeal = (deal) => {
-    console.log("Edit deal:", deal);
-    // TODO: Open edit modal
+const handleEditDeal = (deal) => {
+    setEditingDeal(deal);
+    setIsQuickAddOpen(true);
   };
 
   const handleDeleteDeal = async (deal) => {
@@ -226,12 +227,17 @@ actionLabel="Add Deal"
         </div>
       )}
 
-      <QuickAddModal 
+<QuickAddModal 
         isOpen={isQuickAddOpen}
-        onClose={() => setIsQuickAddOpen(false)}
+        onClose={() => {
+          setIsQuickAddOpen(false);
+          setEditingDeal(null);
+        }}
         activeTab="deal"
         onSuccess={handleDealCreated}
-/>
+        editData={editingDeal}
+        editMode={!!editingDeal}
+      />
     </div>
   );
 };
