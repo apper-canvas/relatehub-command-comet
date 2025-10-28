@@ -24,7 +24,8 @@ const QuickAddModal = ({ isOpen, onClose, activeTab: initialActiveTab = "contact
     title: "",
     value: "",
     probability: "50",
-    stage: "Lead"
+stage: "Lead",
+    notes: ""
   });
 
   const [activityForm, setActivityForm] = useState({
@@ -56,8 +57,9 @@ const [companyForm, setCompanyForm] = useState({
       contactId: "",
       title: "",
       value: "",
-      probability: "50", 
-      stage: "Lead"
+probability: "50", 
+      stage: "Lead",
+      notes: ""
     });
     setActivityForm({
       contactId: "",
@@ -287,6 +289,18 @@ if (!isOpen) return null;
                             <option value="Closed Won">Closed Won</option>
                             <option value="Closed Lost">Closed Lost</option>
                           </select>
+</FormField>
+                        <FormField label="Notes">
+                          <textarea
+                            rows={3}
+                            value={dealForm.notes}
+                            onChange={(e) => setDealForm(prev => ({
+                              ...prev,
+                              notes: e.target.value
+                            }))}
+                            placeholder="Add any additional notes about this deal..."
+                            className="flex w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                          />
                         </FormField>
                       </>
                     )}
