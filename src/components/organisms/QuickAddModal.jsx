@@ -75,7 +75,7 @@ const QuickAddModal = ({ isOpen, onClose, activeTab: initialActiveTab = "contact
     }));
   };
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -97,8 +97,11 @@ if (activeTab === "contact") {
         await companyService.create(companyForm);
         toast.success("Company created successfully!");
       }
+      
+      // Call onSuccess before closing to refresh parent component data
+      if (onSuccess) await onSuccess();
+      
       resetForms();
-      if (onSuccess) onSuccess();
       onClose();
     } catch (error) {
       toast.error("Failed to create item. Please try again.");

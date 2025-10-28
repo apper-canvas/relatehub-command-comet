@@ -283,10 +283,11 @@ filtered.sort((a, b) => {
         contact={selectedContact}
       />
 
-      {/* Quick Add Modal */}
+{/* Quick Add Modal */}
       <QuickAddModal
         isOpen={showQuickAdd}
         onClose={handleCloseQuickAdd}
+        onSuccess={loadContacts}
       />
     </div>
   );
