@@ -65,18 +65,32 @@
       "redirectOnDeny": "/login"
     }
   },
-  "/login": {
+"/quotes": {
     "allow": {
       "when": {
         "conditions": [
           {
-            "label": "Login page is public",
-            "rule": "public"
+            "label": "User must be logged in to view quotes",
+            "rule": "authenticated"
           }
-        ]
+        ],
+        "operator": "OR"
       },
-      "excludeRedirectQuery": true
+      "redirectOnDeny": "/login"
     }
+  },
+  "/sales-orders": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "User must be logged in to view sales orders",
+            "rule": "authenticated"
+          }
+        ],
+        "operator": "OR"
+      },
+      "redirectOnDeny": "/login"
   },
   "/signup": {
     "allow": {
@@ -143,4 +157,4 @@
       "excludeRedirectQuery": true
     }
   }
-}
+}}

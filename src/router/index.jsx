@@ -1,17 +1,18 @@
 import { createBrowserRouter } from "react-router-dom";
-import { lazy, Suspense } from 'react';
+import React, { Suspense, lazy } from "react";
+import { getRouteConfig } from "@/router/route.utils";
 import Root from "@/layouts/Root";
 import Layout from "@/components/organisms/Layout";
-import { getRouteConfig } from "./route.utils";
+import Login from "@/pages/Login";
+import Signup from "@/pages/Signup";
 
 const Dashboard = lazy(() => import('@/components/pages/Dashboard'));
 const Contacts = lazy(() => import('@/components/pages/Contacts'));
 const Companies = lazy(() => import('@/components/pages/Companies'));
 const Pipeline = lazy(() => import('@/components/pages/Pipeline'));
 const Quotes = lazy(() => import('@/components/pages/Quotes'));
+const SalesOrders = lazy(() => import('@/components/pages/SalesOrders'));
 const NotFound = lazy(() => import('@/components/pages/NotFound'));
-const Login = lazy(() => import('@/pages/Login'));
-const Signup = lazy(() => import('@/pages/Signup'));
 const Callback = lazy(() => import('@/pages/Callback'));
 const ErrorPage = lazy(() => import('@/pages/ErrorPage'));
 const ResetPassword = lazy(() => import('@/pages/ResetPassword'));
@@ -74,12 +75,14 @@ const mainRoutes = [
   createRoute({
     path: 'pipeline',
     element: <Pipeline />,
-}),
+  }),
   createRoute({
     path: 'quotes',
     element: <Quotes />,
-    title: 'Quotes',
-    description: 'Manage sales quotes'
+  }),
+  createRoute({
+    path: 'sales-orders',
+    element: <SalesOrders />,
   }),
   createRoute({
     path: '*',

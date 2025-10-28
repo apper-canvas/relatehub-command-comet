@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "@/layouts/Root";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
+import Quotes from "@/components/pages/Quotes";
 import { cn } from "@/utils/cn";
 
 function Header({ onQuickAdd }) {
@@ -22,18 +23,15 @@ const navItems = [
       <div className="px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-3">
+<div className="flex items-center gap-3">
             <div className="p-2 bg-primary rounded-lg">
               <ApperIcon name="Zap" size={20} className="text-white" />
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-slate-900">RelateHub</h1>
-              <p className="text-xs text-slate-600">CRM Platform</p>
-            </div>
+            <h1 className="text-xl font-bold text-slate-900">CRM</h1>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-2">
             {navItems.map((item) => (
               <NavLink
                 key={item.path}
@@ -53,7 +51,6 @@ const navItems = [
               </NavLink>
             ))}
           </nav>
-
           {/* Actions */}
 <div className="flex items-center gap-3">
             <Button

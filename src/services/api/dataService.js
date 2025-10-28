@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 import React from "react";
 import { getApperClient } from "@/services/apperClient";
+import Error from "@/components/ui/Error";
 
 // Contact Service
 export const contactService = {
@@ -277,7 +278,7 @@ export const companyService = {
     }
   },
 
-  getById: async (id) => {
+getById: async (id) => {
     try {
       const apperClient = getApperClient();
       const response = await apperClient.getRecordById('company_c', parseInt(id), {
@@ -427,6 +428,199 @@ export const companyService = {
       console.error("Error deleting company:", error?.response?.data?.message || error);
       return { success: false };
     }
+  }
+};
+
+// Sales Order Service
+export const salesOrderService = {
+  async getAll() {
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error('ApperClient not initialized');
+      }
+
+      const response = await apperClient.fetchRecords('sales_order_c', {
+        fields: [
+          { field: { Name: 'Id' } },
+          { field: { Name: 'order_number_c' } },
+          { field: { Name: 'order_date_c' } },
+          { field: { Name: 'total_amount_c' } },
+          { field: { Name: 'status_c' } },
+          { field: { Name: 'shipping_address_c' } },
+          { field: { Name: 'billing_address_c' } },
+          { field: { Name: 'description_c' } },
+          { field: { Name: 'contact_id_c' } },
+          { field: { Name: 'deal_id_c' } }
+        ],
+        orderBy: [{ fieldName: 'Id', sorttype: 'DESC' }]
+      });
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return [];
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error('Error fetching sales orders:', error?.response?.data?.message || error);
+      toast.error('Failed to load sales orders');
+      return [];
+    }
+  },
+
+  async getById(id) {
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error('ApperClient not initialized');
+      }
+
+      const response = await apperClient.getRecordById('sales_order_c', id, {
+        fields: [
+          { field: { Name: 'Id' } },
+          { field: { Name: 'order_number_c' } },
+          { field: { Name: 'order_date_c' } },
+          { field: { Name: 'contact_id_c' } },
+          { field: { Name: 'deal_id_c' } },
+          { field: { Name: 'total_amount_c' } },
+          { field: { Name: 'status_c' } },
+          { field: { Name: 'shipping_address_c' } },
+          { field: { Name: 'billing_address_c' } },
+          { field: { Name: 'description_c' } }
+        ]
+      });
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return null;
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching sales order ${id}:`, error?.response?.data?.message || error);
+      toast.error('Failed to load sales order');
+      return null;
+    }
+  },
+
+  async create(orderData) {
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error('ApperClient not initialized');
+      }
+
+      const payload = {
+        records: [{
+          order_number_c: orderData.order_number_c,
+          order_date_c: orderData.order_date_c,
+          contact_id_c: orderData.contact_id_c,
+          deal_id_c: orderData.deal_id_c,
+          total_amount_c: orderData.total_amount_c,
+          status_c: orderData.status_c || 'Draft',
+          shipping_address_c: orderData.shipping_address_c,
+          billing_address_c: orderData.billing_address_c,
+          description_c: orderData.description_c
+        }]
+      };
+
+      const response = await apperClient.createRecord('sales_order_c', payload);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return { success: false };
+      }
+
+      if (response.results) {
+        const failed = response.results.filter(r => !r.success);
+        if (failed.length > 0) {
+          console.error(`Failed to create sales order: ${failed.map(f => f.message).join(', ')}`);
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message);
+          });
+          return { success: false };
+        }
+      }
+
+      toast.success('Sales order created successfully');
+      return { success: true, data: response.results?.[0]?.data };
+    } catch (error) {
+      console.error('Error creating sales order:', error?.response?.data?.message || error);
+      toast.error('Failed to create sales order');
+      return { success: false };
+    }
+  },
+
+  async update(id, orderData) {
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error('ApperClient not initialized');
+      }
+
+      const payload = {
+        records: [{
+          Id: id,
+          ...orderData
+        }]
+      };
+
+      const response = await apperClient.updateRecord('sales_order_c', payload);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return { success: false };
+      }
+
+      toast.success('Sales order updated successfully');
+      return { success: true, data: response.results?.[0]?.data };
+    } catch (error) {
+      console.error('Error updating sales order:', error?.response?.data?.message || error);
+      toast.error('Failed to update sales order');
+      return { success: false };
+    }
+  },
+
+  async delete(id) {
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error('ApperClient not initialized');
+      }
+
+      const response = await apperClient.deleteRecord('sales_order_c', { RecordIds: [id] });
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return { success: false };
+      }
+
+      toast.success('Sales order deleted successfully');
+      return { success: true };
+    } catch (error) {
+      console.error('Error deleting sales order:', error?.response?.data?.message || error);
+      toast.error('Failed to delete sales order');
+      return { success: false };
+    }
+  },
+
+  async search(query) {
+    const allOrders = await this.getAll();
+    if (!query.trim()) return allOrders;
+
+    const lowerQuery = query.toLowerCase();
+    return allOrders.filter(order =>
+      order.order_number_c?.toLowerCase().includes(lowerQuery) ||
+      order.contact_id_c?.Name?.toLowerCase().includes(lowerQuery) ||
+      order.deal_id_c?.Name?.toLowerCase().includes(lowerQuery) ||
+      order.status_c?.toLowerCase().includes(lowerQuery)
+    );
   }
 };
 
@@ -921,8 +1115,8 @@ export const activityService = {
       }
 
       return { success: true };
-    } catch (error) {
-console.error("Error deleting activity:", error?.response?.data?.message || error);
+} catch (error) {
+      console.error("Error deleting activity:", error?.response?.data?.message || error);
       return { success: false };
     }
   }
@@ -1148,8 +1342,9 @@ export const quoteService = {
           });
           return { success: false };
         }
-      }
-return { success: true };
+}
+
+      return { success: true };
     } catch (error) {
       console.error("Error deleting quote:", error?.response?.data?.message || error);
       return { success: false };
