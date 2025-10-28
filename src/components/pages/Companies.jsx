@@ -285,9 +285,9 @@ company.name_c?.toLowerCase().includes(query) ||
                   variant="ghost"
                   size="sm"
                   className="flex-1 gap-1.5 text-error hover:bg-error/10 hover:text-error"
-                  onClick={(e) => {
+onClick={(e) => {
                     e.stopPropagation();
-                    handleDeleteCompany(company.Id, company.Name);
+                    handleDeleteCompany(company.Id, company.name_c);
                   }}
                 >
                   <ApperIcon name="Trash2" size={14} />

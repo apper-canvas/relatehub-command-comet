@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { activityService, contactService, dealService, companyService } from "@/services/api/dataService";
+import { activityService, companyService, contactService, dealService } from "@/services/api/dataService";
 import { toast } from "react-toastify";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
@@ -332,13 +332,13 @@ if (!isOpen) return null;
                       </>
 )}
 
-                    {/* Company Form */}
+{/* Company Form */}
                     {activeTab === "company" && (
                       <div className="space-y-4">
                         <FormField
                           label="Company Name"
-                          name="Name"
-                          value={companyForm.Name}
+                          name="name_c"
+                          value={companyForm.name_c}
                           onChange={handleCompanyChange}
                           placeholder="Enter company name"
                           required
@@ -346,33 +346,33 @@ if (!isOpen) return null;
 
                         <FormField
                           label="Industry"
-                          name="Industry"
-                          value={companyForm.Industry}
+                          name="industry_c"
+                          value={companyForm.industry_c}
                           onChange={handleCompanyChange}
                           placeholder="e.g., Technology, Healthcare"
                         />
 
                         <FormField
                           label="Website"
-                          name="Website"
+                          name="website_c"
                           type="url"
-                          value={companyForm.Website}
+                          value={companyForm.website_c}
                           onChange={handleCompanyChange}
                           placeholder="https://example.com"
                         />
 
                         <FormField
                           label="Company Size"
-                          name="Size"
-                          value={companyForm.Size}
+                          name="size_c"
+                          value={companyForm.size_c}
                           onChange={handleCompanyChange}
                           placeholder="e.g., 50-200 employees"
                         />
 
                         <FormField
                           label="Annual Revenue"
-                          name="Revenue"
-                          value={companyForm.Revenue}
+                          name="revenue_c"
+                          value={companyForm.revenue_c}
                           onChange={handleCompanyChange}
                           placeholder="e.g., $10M-$50M"
                         />
@@ -382,17 +382,18 @@ if (!isOpen) return null;
                             Status
                           </label>
                           <select
-                            name="Status"
-                            value={companyForm.Status}
+                            name="status_c"
+                            value={companyForm.status_c}
                             onChange={handleCompanyChange}
                             className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                           >
                             <option value="Active">Active</option>
                             <option value="Inactive">Inactive</option>
-                          </select>
+</select>
                         </div>
                       </div>
                     )}
+
                     {/* Actions */}
                     <div className="flex justify-end space-x-3 pt-4">
                       <Button
