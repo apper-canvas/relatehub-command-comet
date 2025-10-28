@@ -1,0 +1,92 @@
+[
+  {
+    "Id": 1,
+    "contactId": 1,
+    "type": "call",
+    "subject": "Discovery call about enterprise needs",
+    "description": "Discussed current pain points and requirements. Sarah confirmed they need multi-user access and advanced reporting.",
+    "timestamp": "2024-01-20T14:15:00Z",
+    "duration": 45
+  },
+  {
+    "Id": 2,
+    "contactId": 1,
+    "type": "email",
+    "subject": "Enterprise proposal sent",
+    "description": "Sent detailed proposal with pricing for 50-user enterprise license. Included custom integration options.",
+    "timestamp": "2024-01-18T09:30:00Z",
+    "duration": null
+  },
+  {
+    "Id": 3,
+    "contactId": 2,
+    "type": "meeting",
+    "subject": "Product demo for startup team",
+    "description": "Demonstrated core features to Michael and his team. They were impressed with the ease of use.",
+    "timestamp": "2024-01-18T11:30:00Z",
+    "duration": 60
+  },
+  {
+    "Id": 4,
+    "contactId": 2,
+    "type": "note",
+    "subject": "Follow-up on pricing discussion",
+    "description": "Michael mentioned they're bootstrapped and need competitive pricing. Considering startup discount program.",
+    "timestamp": "2024-01-19T16:20:00Z",
+    "duration": null
+  },
+  {
+    "Id": 5,
+    "contactId": 3,
+    "type": "call",
+    "subject": "ERP integration requirements",
+    "description": "Discussed technical requirements for SAP integration. Emily will provide API documentation.",
+    "timestamp": "2024-01-19T10:45:00Z",
+    "duration": 30
+  },
+  {
+    "Id": 6,
+    "contactId": 4,
+    "type": "email",
+    "subject": "Bulk licensing information sent",
+    "description": "Provided information about multi-client licensing options and volume discounts.",
+    "timestamp": "2024-01-16T15:20:00Z",
+    "duration": null
+  },
+  {
+    "Id": 7,
+    "contactId": 5,
+    "type": "call",
+    "subject": "Security compliance discussion",
+    "description": "Reviewed SOC 2 documentation and security features. Lisa needs to share with compliance team.",
+    "timestamp": "2024-01-17T09:15:00Z",
+    "duration": 40
+  },
+  {
+    "Id": 8,
+    "contactId": 6,
+    "type": "meeting",
+    "subject": "Multi-location setup planning",
+    "description": "Planned rollout strategy for 15 locations. Robert wants phased implementation starting with 3 pilot stores.",
+    "timestamp": "2024-01-21T16:00:00Z",
+    "duration": 90
+  },
+  {
+    "Id": 9,
+    "contactId": 1,
+    "type": "task",
+    "subject": "Prepare custom integration proposal",
+    "description": "Need to create detailed technical proposal for TechCorp's existing system integration requirements.",
+    "timestamp": "2024-01-21T08:00:00Z",
+    "duration": null
+  },
+  {
+    "Id": 10,
+    "contactId": 3,
+    "type": "note",
+    "subject": "Demo scheduled for next week",
+    "description": "Emily confirmed demo for manufacturing team on Tuesday 2 PM. Will include operations manager and IT lead.",
+    "timestamp": "2024-01-20T12:30:00Z",
+    "duration": null
+  }
+]

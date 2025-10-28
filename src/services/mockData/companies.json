@@ -1,0 +1,167 @@
+[
+  {
+    "Id": 1,
+    "Name": "TechVision Solutions",
+    "Industry": "Technology",
+    "Website": "https://techvision.example.com",
+    "Size": "200-500 employees",
+    "Revenue": "$50M-$100M",
+    "Status": "Active",
+    "LastContact": "2024-01-15T10:30:00Z",
+    "Notes": "Enterprise software solutions provider"
+  },
+  {
+    "Id": 2,
+    "Name": "Global Manufacturing Inc",
+    "Industry": "Manufacturing",
+    "Website": "https://globalmanufacturing.example.com",
+    "Size": "1000+ employees",
+    "Revenue": "$500M+",
+    "Status": "Active",
+    "LastContact": "2024-01-18T14:20:00Z",
+    "Notes": "Leading industrial equipment manufacturer"
+  },
+  {
+    "Id": 3,
+    "Name": "HealthCare Partners",
+    "Industry": "Healthcare",
+    "Website": "https://healthcarepartners.example.com",
+    "Size": "50-200 employees",
+    "Revenue": "$10M-$50M",
+    "Status": "Active",
+    "LastContact": "2024-01-20T09:15:00Z",
+    "Notes": "Medical services and consulting"
+  },
+  {
+    "Id": 4,
+    "Name": "RetailMax Corporation",
+    "Industry": "Retail",
+    "Website": "https://retailmax.example.com",
+    "Size": "500-1000 employees",
+    "Revenue": "$100M-$500M",
+    "Status": "Active",
+    "LastContact": "2024-01-22T11:45:00Z",
+    "Notes": "Multi-channel retail operations"
+  },
+  {
+    "Id": 5,
+    "Name": "FinanceFirst Group",
+    "Industry": "Finance",
+    "Website": "https://financefirst.example.com",
+    "Size": "200-500 employees",
+    "Revenue": "$100M-$500M",
+    "Status": "Active",
+    "LastContact": "2024-01-12T16:30:00Z",
+    "Notes": "Investment and wealth management"
+  },
+  {
+    "Id": 6,
+    "Name": "EduLearn Systems",
+    "Industry": "Education",
+    "Website": "https://edulearn.example.com",
+    "Size": "50-200 employees",
+    "Revenue": "$10M-$50M",
+    "Status": "Active",
+    "LastContact": "2024-01-19T13:00:00Z",
+    "Notes": "Online learning platform provider"
+  },
+  {
+    "Id": 7,
+    "Name": "Construction Dynamics",
+    "Industry": "Construction",
+    "Website": "https://constructiondynamics.example.com",
+    "Size": "200-500 employees",
+    "Revenue": "$50M-$100M",
+    "Status": "Active",
+    "LastContact": "2024-01-17T10:00:00Z",
+    "Notes": "Commercial construction and development"
+  },
+  {
+    "Id": 8,
+    "Name": "Energy Solutions Ltd",
+    "Industry": "Energy",
+    "Website": "https://energysolutions.example.com",
+    "Size": "500-1000 employees",
+    "Revenue": "$500M+",
+    "Status": "Active",
+    "LastContact": "2024-01-21T15:30:00Z",
+    "Notes": "Renewable energy infrastructure"
+  },
+  {
+    "Id": 9,
+    "Name": "FoodService Pro",
+    "Industry": "Food Services",
+    "Website": "https://foodservicepro.example.com",
+    "Size": "50-200 employees",
+    "Revenue": "$10M-$50M",
+    "Status": "Active",
+    "LastContact": "2024-01-16T12:00:00Z",
+    "Notes": "Restaurant supply chain management"
+  },
+  {
+    "Id": 10,
+    "Name": "TransLogistics Corp",
+    "Industry": "Logistics",
+    "Website": "https://translogistics.example.com",
+    "Size": "1000+ employees",
+    "Revenue": "$500M+",
+    "Status": "Active",
+    "LastContact": "2024-01-14T09:45:00Z",
+    "Notes": "Global freight and logistics services"
+  },
+  {
+    "Id": 11,
+    "Name": "MediaWorks Studio",
+    "Industry": "Media",
+    "Website": "https://mediaworks.example.com",
+    "Size": "50-200 employees",
+    "Revenue": "$10M-$50M",
+    "Status": "Inactive",
+    "LastContact": "2023-12-10T14:00:00Z",
+    "Notes": "Digital content production"
+  },
+  {
+    "Id": 12,
+    "Name": "RealEstate Ventures",
+    "Industry": "Real Estate",
+    "Website": "https://realestateventures.example.com",
+    "Size": "200-500 employees",
+    "Revenue": "$100M-$500M",
+    "Status": "Active",
+    "LastContact": "2024-01-23T11:00:00Z",
+    "Notes": "Commercial property development"
+  },
+  {
+    "Id": 13,
+    "Name": "AutoTech Industries",
+    "Industry": "Automotive",
+    "Website": "https://autotech.example.com",
+    "Size": "500-1000 employees",
+    "Revenue": "$100M-$500M",
+    "Status": "Active",
+    "LastContact": "2024-01-13T16:15:00Z",
+    "Notes": "Automotive parts manufacturing"
+  },
+  {
+    "Id": 14,
+    "Name": "InsurancePlus",
+    "Industry": "Insurance",
+    "Website": "https://insuranceplus.example.com",
+    "Size": "200-500 employees",
+    "Revenue": "$50M-$100M",
+    "Status": "Active",
+    "LastContact": "2024-01-11T10:30:00Z",
+    "Notes": "Commercial insurance services"
+  },
+  {
+    "Id": 15,
+    "Name": "TeleConnect Services",
+    "Industry": "Telecommunications",
+    "Website": "https://teleconnect.example.com",
+    "Size": "1000+ employees",
+    "Revenue": "$500M+",
+    "Status": "Inactive",
+    "LastContact": "2023-11-20T13:00:00Z",
+    "Notes": "Enterprise telecommunications solutions"
+  }
+]

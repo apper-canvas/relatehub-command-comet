@@ -1,0 +1,86 @@
+[
+  {
+    "Id": 1,
+    "contactId": 1,
+    "title": "TechCorp Enterprise License",
+    "value": 45000,
+    "probability": 80,
+    "stage": "Proposal",
+    "expectedCloseDate": "2024-02-15",
+    "createdAt": "2024-01-15T10:00:00Z",
+    "stageChangedAt": "2024-01-18T09:30:00Z",
+    "notes": "Proposal sent, waiting for internal review. Sarah mentioned they need approval from CFO."
+  },
+  {
+    "Id": 2,
+    "contactId": 2,
+    "title": "Startup Package - 25 Users",
+    "value": 12000,
+    "probability": 60,
+    "stage": "Negotiation",
+    "expectedCloseDate": "2024-02-01",
+    "createdAt": "2024-01-10T14:20:00Z",
+    "stageChangedAt": "2024-01-19T11:15:00Z",
+    "notes": "Negotiating pricing for first-year discount. Michael is very interested but needs to manage cash flow."
+  },
+  {
+    "Id": 3,
+    "contactId": 3,
+    "title": "Manufacturing Integration Project",
+    "value": 75000,
+    "probability": 70,
+    "stage": "Qualified",
+    "expectedCloseDate": "2024-03-01",
+    "createdAt": "2024-01-12T15:45:00Z",
+    "stageChangedAt": "2024-01-16T13:20:00Z",
+    "notes": "Demo scheduled for next week. Emily confirmed budget and decision-making authority."
+  },
+  {
+    "Id": 4,
+    "contactId": 4,
+    "title": "Consultant Multi-Client License",
+    "value": 25000,
+    "probability": 45,
+    "stage": "Lead",
+    "expectedCloseDate": "2024-02-28",
+    "createdAt": "2024-01-08T16:30:00Z",
+    "stageChangedAt": "2024-01-08T16:30:00Z",
+    "notes": "David is evaluating options for his clients. Needs bulk pricing structure."
+  },
+  {
+    "Id": 5,
+    "contactId": 5,
+    "title": "Financial Services Compliance Package",
+    "value": 60000,
+    "probability": 55,
+    "stage": "Qualified",
+    "expectedCloseDate": "2024-03-15",
+    "createdAt": "2024-01-05T12:10:00Z",
+    "stageChangedAt": "2024-01-17T10:45:00Z",
+    "notes": "Security documentation provided. Lisa is reviewing with compliance team."
+  },
+  {
+    "Id": 6,
+    "contactId": 6,
+    "title": "Retail Multi-Location Setup",
+    "value": 35000,
+    "probability": 90,
+    "stage": "Negotiation",
+    "expectedCloseDate": "2024-01-30",
+    "createdAt": "2024-01-03T09:15:00Z",
+    "stageChangedAt": "2024-01-20T14:30:00Z",
+    "notes": "Contract terms almost finalized. Robert ready to sign pending final pricing approval."
+  },
+  {
+    "Id": 7,
+    "contactId": 1,
+    "title": "TechCorp Additional Modules",
+    "value": 15000,
+    "probability": 30,
+    "stage": "Lead",
+    "expectedCloseDate": "2024-04-01",
+    "createdAt": "2024-01-20T11:00:00Z",
+    "stageChangedAt": "2024-01-20T11:00:00Z",
+    "notes": "Potential add-on modules for existing implementation. Depends on success of main project."
+  }
+]

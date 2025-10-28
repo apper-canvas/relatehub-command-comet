@@ -1,0 +1,80 @@
+[
+  {
+    "Id": 1,
+    "firstName": "Sarah",
+    "lastName": "Johnson",
+    "email": "sarah.johnson@techcorp.com",
+    "phone": "+1 (555) 123-4567",
+    "company": "TechCorp Solutions",
+    "title": "VP of Marketing",
+    "tags": ["Hot Lead", "Enterprise"],
+    "notes": "Interested in our enterprise package. Has budget approved for Q1 2024. Prefers email communication.",
+    "createdAt": "2024-01-15T09:30:00Z",
+    "lastContactedAt": "2024-01-20T14:15:00Z"
+  },
+  {
+    "Id": 2,
+    "firstName": "Michael",
+    "lastName": "Chen",
+    "email": "m.chen@startupventures.io",
+    "phone": "+1 (555) 987-6543",
+    "company": "Startup Ventures",
+    "title": "Founder & CEO",
+    "tags": ["Startup", "Referral"],
+    "notes": "Referred by John Smith. Looking for cost-effective solution for their growing team.",
+    "createdAt": "2024-01-10T16:45:00Z",
+    "lastContactedAt": "2024-01-18T11:30:00Z"
+  },
+  {
+    "Id": 3,
+    "firstName": "Emily",
+    "lastName": "Rodriguez",
+    "email": "emily.r@globalmanufacturing.com",
+    "phone": "+1 (555) 456-7890",
+    "company": "Global Manufacturing Inc",
+    "title": "Operations Director",
+    "tags": ["Manufacturing", "Warm Lead"],
+    "notes": "Needs integration with existing ERP system. Scheduled demo for next week.",
+    "createdAt": "2024-01-12T08:20:00Z",
+    "lastContactedAt": "2024-01-19T10:45:00Z"
+  },
+  {
+    "Id": 4,
+    "firstName": "David",
+    "lastName": "Thompson",
+    "email": "david.thompson@consultant.com",
+    "phone": "+1 (555) 321-9876",
+    "company": "Independent Consultant",
+    "title": "Business Consultant",
+    "tags": ["Consultant", "Small Business"],
+    "notes": "Works with multiple small businesses. Potential for bulk licensing deal.",
+    "createdAt": "2024-01-08T13:10:00Z",
+    "lastContactedAt": "2024-01-16T15:20:00Z"
+  },
+  {
+    "Id": 5,
+    "firstName": "Lisa",
+    "lastName": "Wang",
+    "email": "lisa.wang@financialservices.com",
+    "phone": "+1 (555) 654-3210",
+    "company": "Premier Financial Services",
+    "title": "IT Manager",
+    "tags": ["Financial Services", "Compliance"],
+    "notes": "Requires SOC 2 compliance documentation. Security is top priority.",
+    "createdAt": "2024-01-05T11:55:00Z",
+    "lastContactedAt": "2024-01-17T09:15:00Z"
+  },
+  {
+    "Id": 6,
+    "firstName": "Robert",
+    "lastName": "Martinez",
+    "email": "robert.martinez@retailchain.com",
+    "phone": "+1 (555) 789-0123",
+    "company": "Retail Chain Solutions",
+    "title": "Regional Manager",
+    "tags": ["Retail", "Multi-location"],
+    "notes": "Manages 15 store locations. Interested in centralized reporting features.",
+    "createdAt": "2024-01-03T14:30:00Z",
+    "lastContactedAt": "2024-01-21T16:00:00Z"
+  }
+]
