@@ -575,12 +575,16 @@ export const dealService = {
     }
   },
 
-  update: async (id, dealData) => {
+update: async (id, dealData) => {
     try {
       const apperClient = getApperClient();
       const updatePayload = {
         Id: parseInt(id)
       };
+
+      // Track if stage is being updated for email generation
+      const isStageUpdate = !!(dealData.stage || dealData.stage_c);
+      let stageValue = null;
 
       if (dealData.contactId || dealData.contact_id_c) {
         updatePayload.contact_id_c = parseInt(dealData.contactId || dealData.contact_id_c);
@@ -595,7 +599,8 @@ export const dealService = {
         updatePayload.probability_c = parseInt(dealData.probability || dealData.probability_c);
       }
       if (dealData.stage || dealData.stage_c) {
-        updatePayload.stage_c = dealData.stage || dealData.stage_c;
+        stageValue = dealData.stage || dealData.stage_c;
+        updatePayload.stage_c = stageValue;
         updatePayload.stage_changed_at_c = new Date().toISOString();
       }
       if (dealData.expectedCloseDate || dealData.expected_close_date_c) {
@@ -605,6 +610,46 @@ export const dealService = {
         updatePayload.notes_c = dealData.notes || dealData.notes_c;
       }
 
+      // If stage is being updated, generate email template
+      if (isStageUpdate && stageValue) {
+        try {
+          toast.info('Generating email template...');
+          
+          // Prepare data for email generation
+          const emailRequestBody = {
+            dealTitle: dealData.title_c || dealData.title || 'Untitled Deal',
+            stage: stageValue,
+            dealValue: dealData.value_c || dealData.value,
+            contactName: dealData.contactName || null
+          };
+
+          // Invoke Edge Function to generate email
+          const emailResponse = await apperClient.functions.invoke(
+            import.meta.env.VITE_GENERATE_DEAL_EMAIL,
+            {
+              body: JSON.stringify(emailRequestBody),
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+          );
+
+          // Check if email generation was successful
+          if (emailResponse && emailResponse.success && emailResponse.emailTemplate) {
+            // Add generated email to notes field
+            updatePayload.notes_c = emailResponse.emailTemplate;
+            toast.success('Email template generated successfully');
+          } else {
+            // Log error but continue with deal update
+            console.info(`apper_info: Got an error in this function: ${import.meta.env.VITE_GENERATE_DEAL_EMAIL}. The response body is: ${JSON.stringify(emailResponse)}.`);
+            toast.warning('Deal updated, but email generation failed');
+          }
+        } catch (emailError) {
+          // Log error but continue with deal update
+          console.info(`apper_info: Got this error in this function: ${import.meta.env.VITE_GENERATE_DEAL_EMAIL}. The error is: ${emailError.message}`);
+          toast.warning('Deal updated, but email generation encountered an error');
+        }
+      }
       const payload = { records: [updatePayload] };
 
       const response = await apperClient.updateRecord('deal_c', payload);
