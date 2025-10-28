@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { activityService, companyService, contactService, dealService } from "@/services/api/dataService";
@@ -7,7 +7,7 @@ import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
 import FormField from "@/components/molecules/FormField";
 
-const QuickAddModal = ({ isOpen, onClose, activeTab: initialActiveTab = "contact", onSuccess, editData = null, editMode = false }) => {
+const QuickAddModal = ({ isOpen, onClose, activeTab: initialActiveTab = "contact", onSuccess, editData = null, editMode = false, companies = [], contacts = [], deals = [] }) => {
   const [activeTab, setActiveTab] = useState(initialActiveTab);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [contactForm, setContactForm] = useState({
@@ -68,6 +68,28 @@ const [companyForm, setCompanyForm] = useState({
     status_c: "Active"
   });
 
+  const [quoteForm, setQuoteForm] = useState({
+    company_id_c: "",
+    contact_id_c: "",
+    deal_id_c: "",
+    quote_date_c: new Date().toISOString().split('T')[0],
+    status_c: "Draft",
+    delivery_method_c: "",
+    expires_on_c: "",
+    bill_to_name_c: "",
+    bill_to_street_c: "",
+    bill_to_city_c: "",
+    bill_to_state_c: "",
+    bill_to_country_c: "",
+    bill_to_pincode_c: "",
+    ship_to_name_c: "",
+    ship_to_street_c: "",
+    ship_to_city_c: "",
+    ship_to_state_c: "",
+    ship_to_country_c: "",
+    ship_to_pincode_c: ""
+  });
+
 const resetForms = () => {
     setContactForm({
       firstName: "",
@@ -90,6 +112,27 @@ const resetForms = () => {
       type: "call",
       subject: "",
       description: ""
+    });
+    setQuoteForm({
+      company_id_c: "",
+      contact_id_c: "",
+      deal_id_c: "",
+      quote_date_c: new Date().toISOString().split('T')[0],
+      status_c: "Draft",
+      delivery_method_c: "",
+      expires_on_c: "",
+      bill_to_name_c: "",
+      bill_to_street_c: "",
+      bill_to_city_c: "",
+      bill_to_state_c: "",
+      bill_to_country_c: "",
+      bill_to_pincode_c: "",
+      ship_to_name_c: "",
+      ship_to_street_c: "",
+      ship_to_city_c: "",
+      ship_to_state_c: "",
+      ship_to_country_c: "",
+      ship_to_pincode_c: ""
     });
   };
 
@@ -131,6 +174,10 @@ const handleSubmit = async (e) => {
       } else if (activeTab === "company") {
         await companyService.create(companyForm);
         toast.success("Company created successfully!");
+      } else if (activeTab === "quote") {
+        const { quoteService } = await import('@/services/api/dataService');
+        await quoteService.create(quoteForm);
+        toast.success("Quote created successfully!");
       }
       
       // Call onSuccess before closing to refresh parent component data
@@ -145,11 +192,12 @@ const handleSubmit = async (e) => {
     }
   };
 
-  const tabs = [
+const tabs = [
     { id: "contact", label: "Contact", icon: "User" },
     { id: "deal", label: "Deal", icon: "DollarSign" },
-{ id: "activity", label: "Activity", icon: "Calendar" },
-    { id: "company", label: "Company", icon: "Building2" }
+    { id: "activity", label: "Activity", icon: "Calendar" },
+    { id: "company", label: "Company", icon: "Building2" },
+    { id: "quote", label: "Quote", icon: "FileText" }
   ];
 
 if (!isOpen) return null;
@@ -373,13 +421,13 @@ if (!isOpen) return null;
                               ...prev,
                               description: e.target.value
                             }))}
-                            className="flex w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+className="flex w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                           />
                         </FormField>
                       </>
-)}
+                    )}
 
-{/* Company Form */}
+                    {/* Company Form */}
                     {activeTab === "company" && (
                       <div className="space-y-4">
                         <FormField
@@ -437,6 +485,244 @@ if (!isOpen) return null;
                             <option value="Active">Active</option>
                             <option value="Inactive">Inactive</option>
 </select>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Quote Form */}
+                    {activeTab === "quote" && (
+                      <div className="space-y-4">
+                        <div className="space-y-3">
+                          <h4 className="text-sm font-medium text-slate-700">Basic Information</h4>
+                          
+                          <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                              Company *
+                            </label>
+                            <select
+                              value={quoteForm.company_id_c}
+                              onChange={(e) => setQuoteForm(prev => ({
+                                ...prev,
+                                company_id_c: e.target.value
+                              }))}
+                              required
+                              className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                            >
+                              <option value="">Select Company</option>
+                              {companies.map(company => (
+                                <option key={company.Id} value={company.Id}>
+                                  {company.name_c}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                              Contact *
+                            </label>
+                            <select
+                              value={quoteForm.contact_id_c}
+                              onChange={(e) => setQuoteForm(prev => ({
+                                ...prev,
+                                contact_id_c: e.target.value
+                              }))}
+                              required
+                              className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                            >
+                              <option value="">Select Contact</option>
+                              {contacts.map(contact => (
+                                <option key={contact.Id} value={contact.Id}>
+                                  {contact.first_name_c} {contact.last_name_c}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                              Deal
+                            </label>
+                            <select
+                              value={quoteForm.deal_id_c}
+                              onChange={(e) => setQuoteForm(prev => ({
+                                ...prev,
+                                deal_id_c: e.target.value
+                              }))}
+                              className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                            >
+                              <option value="">Select Deal</option>
+                              {deals.map(deal => (
+                                <option key={deal.Id} value={deal.Id}>
+                                  {deal.title_c}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4">
+                            <FormField
+                              label="Quote Date"
+                              type="date"
+                              value={quoteForm.quote_date_c}
+                              onChange={(e) => setQuoteForm(prev => ({
+                                ...prev,
+                                quote_date_c: e.target.value
+                              }))}
+                              required
+                            />
+                            <FormField
+                              label="Expires On"
+                              type="date"
+                              value={quoteForm.expires_on_c}
+                              onChange={(e) => setQuoteForm(prev => ({
+                                ...prev,
+                                expires_on_c: e.target.value
+                              }))}
+                            />
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                                Status
+                              </label>
+                              <select
+                                value={quoteForm.status_c}
+                                onChange={(e) => setQuoteForm(prev => ({
+                                  ...prev,
+                                  status_c: e.target.value
+                                }))}
+                                className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                              >
+                                <option value="Draft">Draft</option>
+                                <option value="Sent">Sent</option>
+                                <option value="Accepted">Accepted</option>
+                                <option value="Rejected">Rejected</option>
+                              </select>
+                            </div>
+                            <FormField
+                              label="Delivery Method"
+                              value={quoteForm.delivery_method_c}
+                              onChange={(e) => setQuoteForm(prev => ({
+                                ...prev,
+                                delivery_method_c: e.target.value
+                              }))}
+                              placeholder="e.g., Email, Postal"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-3 pt-4 border-t">
+                          <h4 className="text-sm font-medium text-slate-700">Billing Address</h4>
+                          <FormField
+                            label="Bill To Name"
+                            value={quoteForm.bill_to_name_c}
+                            onChange={(e) => setQuoteForm(prev => ({
+                              ...prev,
+                              bill_to_name_c: e.target.value
+                            }))}
+                          />
+                          <FormField
+                            label="Street"
+                            value={quoteForm.bill_to_street_c}
+                            onChange={(e) => setQuoteForm(prev => ({
+                              ...prev,
+                              bill_to_street_c: e.target.value
+                            }))}
+                          />
+                          <div className="grid grid-cols-2 gap-4">
+                            <FormField
+                              label="City"
+                              value={quoteForm.bill_to_city_c}
+                              onChange={(e) => setQuoteForm(prev => ({
+                                ...prev,
+                                bill_to_city_c: e.target.value
+                              }))}
+                            />
+                            <FormField
+                              label="State"
+                              value={quoteForm.bill_to_state_c}
+                              onChange={(e) => setQuoteForm(prev => ({
+                                ...prev,
+                                bill_to_state_c: e.target.value
+                              }))}
+                            />
+                          </div>
+                          <div className="grid grid-cols-2 gap-4">
+                            <FormField
+                              label="Country"
+                              value={quoteForm.bill_to_country_c}
+                              onChange={(e) => setQuoteForm(prev => ({
+                                ...prev,
+                                bill_to_country_c: e.target.value
+                              }))}
+                            />
+                            <FormField
+                              label="Pincode"
+                              value={quoteForm.bill_to_pincode_c}
+                              onChange={(e) => setQuoteForm(prev => ({
+                                ...prev,
+                                bill_to_pincode_c: e.target.value
+                              }))}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-3 pt-4 border-t">
+                          <h4 className="text-sm font-medium text-slate-700">Shipping Address</h4>
+                          <FormField
+                            label="Ship To Name"
+                            value={quoteForm.ship_to_name_c}
+                            onChange={(e) => setQuoteForm(prev => ({
+                              ...prev,
+                              ship_to_name_c: e.target.value
+                            }))}
+                          />
+                          <FormField
+                            label="Street"
+                            value={quoteForm.ship_to_street_c}
+                            onChange={(e) => setQuoteForm(prev => ({
+                              ...prev,
+                              ship_to_street_c: e.target.value
+                            }))}
+                          />
+                          <div className="grid grid-cols-2 gap-4">
+                            <FormField
+                              label="City"
+                              value={quoteForm.ship_to_city_c}
+                              onChange={(e) => setQuoteForm(prev => ({
+                                ...prev,
+                                ship_to_city_c: e.target.value
+                              }))}
+                            />
+                            <FormField
+                              label="State"
+                              value={quoteForm.ship_to_state_c}
+                              onChange={(e) => setQuoteForm(prev => ({
+                                ...prev,
+                                ship_to_state_c: e.target.value
+                              }))}
+                            />
+                          </div>
+                          <div className="grid grid-cols-2 gap-4">
+                            <FormField
+                              label="Country"
+                              value={quoteForm.ship_to_country_c}
+                              onChange={(e) => setQuoteForm(prev => ({
+                                ...prev,
+                                ship_to_country_c: e.target.value
+                              }))}
+                            />
+                            <FormField
+                              label="Pincode"
+                              value={quoteForm.ship_to_pincode_c}
+                              onChange={(e) => setQuoteForm(prev => ({
+                                ...prev,
+                                ship_to_pincode_c: e.target.value
+                              }))}
+                            />
+                          </div>
                         </div>
                       </div>
                     )}

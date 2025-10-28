@@ -50,6 +50,20 @@
       },
       "redirectOnDeny": "/login"
     }
+},
+  "/quotes": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "User must be logged in to view quotes",
+            "rule": "authenticated"
+          }
+        ],
+        "operator": "OR"
+      },
+      "redirectOnDeny": "/login"
+    }
   },
   "/login": {
     "allow": {

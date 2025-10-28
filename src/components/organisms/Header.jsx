@@ -9,11 +9,12 @@ function Header({ onQuickAdd }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { logout } = useAuth();
 
-  const navItems = [
+const navItems = [
     { path: '/', label: 'Dashboard', icon: 'LayoutDashboard' },
     { path: '/contacts', label: 'Contacts', icon: 'Users' },
     { path: '/companies', label: 'Companies', icon: 'Building2' },
-    { path: '/pipeline', label: 'Pipeline', icon: 'Kanban' }
+    { path: '/pipeline', label: 'Pipeline', icon: 'Kanban' },
+    { path: '/quotes', label: 'Quotes', icon: 'FileText' }
   ];
 
   return (

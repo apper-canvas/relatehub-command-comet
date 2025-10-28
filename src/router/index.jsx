@@ -8,6 +8,7 @@ const Dashboard = lazy(() => import('@/components/pages/Dashboard'));
 const Contacts = lazy(() => import('@/components/pages/Contacts'));
 const Companies = lazy(() => import('@/components/pages/Companies'));
 const Pipeline = lazy(() => import('@/components/pages/Pipeline'));
+const Quotes = lazy(() => import('@/components/pages/Quotes'));
 const NotFound = lazy(() => import('@/components/pages/NotFound'));
 const Login = lazy(() => import('@/pages/Login'));
 const Signup = lazy(() => import('@/pages/Signup'));
@@ -73,6 +74,12 @@ const mainRoutes = [
   createRoute({
     path: 'pipeline',
     element: <Pipeline />,
+}),
+  createRoute({
+    path: 'quotes',
+    element: <Quotes />,
+    title: 'Quotes',
+    description: 'Manage sales quotes'
   }),
   createRoute({
     path: '*',

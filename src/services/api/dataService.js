@@ -1,5 +1,6 @@
-import { getApperClient } from "@/services/apperClient";
 import { toast } from "react-toastify";
+import React from "react";
+import { getApperClient } from "@/services/apperClient";
 
 // Contact Service
 export const contactService = {
@@ -922,6 +923,238 @@ export const activityService = {
       return { success: true };
     } catch (error) {
       console.error("Error deleting activity:", error?.response?.data?.message || error);
+      return { success: false };
+return { success: false };
+    }
+  }
+};
+
+// Quote Service
+export const quoteService = {
+  getAll: async () => {
+    try {
+      const apperClient = getApperClient();
+      const response = await apperClient.fetchRecords('quote_c', {
+        fields: [
+          {"field": {"Name": "Id"}},
+          {"field": {"Name": "company_id_c"}, "referenceField": {"field": {"Name": "Name"}}},
+          {"field": {"Name": "contact_id_c"}, "referenceField": {"field": {"Name": "Name"}}},
+          {"field": {"Name": "deal_id_c"}, "referenceField": {"field": {"Name": "Name"}}},
+          {"field": {"Name": "quote_date_c"}},
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "delivery_method_c"}},
+          {"field": {"Name": "expires_on_c"}},
+          {"field": {"Name": "bill_to_name_c"}},
+          {"field": {"Name": "bill_to_street_c"}},
+          {"field": {"Name": "bill_to_city_c"}},
+          {"field": {"Name": "bill_to_state_c"}},
+          {"field": {"Name": "bill_to_country_c"}},
+          {"field": {"Name": "bill_to_pincode_c"}},
+          {"field": {"Name": "ship_to_name_c"}},
+          {"field": {"Name": "ship_to_street_c"}},
+          {"field": {"Name": "ship_to_city_c"}},
+          {"field": {"Name": "ship_to_state_c"}},
+          {"field": {"Name": "ship_to_country_c"}},
+          {"field": {"Name": "ship_to_pincode_c"}}
+        ]
+      });
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return [];
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching quotes:", error?.response?.data?.message || error);
+      return [];
+    }
+  },
+
+  getById: async (id) => {
+    try {
+      const apperClient = getApperClient();
+      const response = await apperClient.getRecordById('quote_c', parseInt(id), {
+        fields: [
+          {"field": {"Name": "Id"}},
+          {"field": {"Name": "company_id_c"}},
+          {"field": {"Name": "contact_id_c"}},
+          {"field": {"Name": "deal_id_c"}},
+          {"field": {"Name": "quote_date_c"}},
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "delivery_method_c"}},
+          {"field": {"Name": "expires_on_c"}},
+          {"field": {"Name": "bill_to_name_c"}},
+          {"field": {"Name": "bill_to_street_c"}},
+          {"field": {"Name": "bill_to_city_c"}},
+          {"field": {"Name": "bill_to_state_c"}},
+          {"field": {"Name": "bill_to_country_c"}},
+          {"field": {"Name": "bill_to_pincode_c"}},
+          {"field": {"Name": "ship_to_name_c"}},
+          {"field": {"Name": "ship_to_street_c"}},
+          {"field": {"Name": "ship_to_city_c"}},
+          {"field": {"Name": "ship_to_state_c"}},
+          {"field": {"Name": "ship_to_country_c"}},
+          {"field": {"Name": "ship_to_pincode_c"}}
+        ]
+      });
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return null;
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching quote ${id}:`, error?.response?.data?.message || error);
+      return null;
+    }
+  },
+
+  create: async (quoteData) => {
+    try {
+      const apperClient = getApperClient();
+      const payload = {
+        records: [{
+          company_id_c: parseInt(quoteData.company_id_c?.Id || quoteData.company_id_c),
+          contact_id_c: parseInt(quoteData.contact_id_c?.Id || quoteData.contact_id_c),
+          deal_id_c: parseInt(quoteData.deal_id_c?.Id || quoteData.deal_id_c),
+          quote_date_c: quoteData.quote_date_c || new Date().toISOString().split('T')[0],
+          status_c: quoteData.status_c || "Draft",
+          delivery_method_c: quoteData.delivery_method_c || "",
+          expires_on_c: quoteData.expires_on_c || null,
+          bill_to_name_c: quoteData.bill_to_name_c || "",
+          bill_to_street_c: quoteData.bill_to_street_c || "",
+          bill_to_city_c: quoteData.bill_to_city_c || "",
+          bill_to_state_c: quoteData.bill_to_state_c || "",
+          bill_to_country_c: quoteData.bill_to_country_c || "",
+          bill_to_pincode_c: quoteData.bill_to_pincode_c || "",
+          ship_to_name_c: quoteData.ship_to_name_c || "",
+          ship_to_street_c: quoteData.ship_to_street_c || "",
+          ship_to_city_c: quoteData.ship_to_city_c || "",
+          ship_to_state_c: quoteData.ship_to_state_c || "",
+          ship_to_country_c: quoteData.ship_to_country_c || "",
+          ship_to_pincode_c: quoteData.ship_to_pincode_c || ""
+        }]
+      };
+
+      const response = await apperClient.createRecord('quote_c', payload);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return null;
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+
+        if (failed.length > 0) {
+          console.error(`Failed to create ${failed.length} quotes:`, JSON.stringify(failed));
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message);
+          });
+        }
+
+        return successful.length > 0 ? successful[0].data : null;
+      }
+
+      return null;
+    } catch (error) {
+      console.error("Error creating quote:", error?.response?.data?.message || error);
+      return null;
+    }
+  },
+
+  update: async (id, quoteData) => {
+    try {
+      const apperClient = getApperClient();
+      const payload = {
+        records: [{
+          Id: parseInt(id),
+          ...(quoteData.company_id_c ? { company_id_c: parseInt(quoteData.company_id_c?.Id || quoteData.company_id_c) } : {}),
+          ...(quoteData.contact_id_c ? { contact_id_c: parseInt(quoteData.contact_id_c?.Id || quoteData.contact_id_c) } : {}),
+          ...(quoteData.deal_id_c ? { deal_id_c: parseInt(quoteData.deal_id_c?.Id || quoteData.deal_id_c) } : {}),
+          ...(quoteData.quote_date_c ? { quote_date_c: quoteData.quote_date_c } : {}),
+          ...(quoteData.status_c ? { status_c: quoteData.status_c } : {}),
+          ...(quoteData.delivery_method_c ? { delivery_method_c: quoteData.delivery_method_c } : {}),
+          ...(quoteData.expires_on_c ? { expires_on_c: quoteData.expires_on_c } : {}),
+          ...(quoteData.bill_to_name_c ? { bill_to_name_c: quoteData.bill_to_name_c } : {}),
+          ...(quoteData.bill_to_street_c ? { bill_to_street_c: quoteData.bill_to_street_c } : {}),
+          ...(quoteData.bill_to_city_c ? { bill_to_city_c: quoteData.bill_to_city_c } : {}),
+          ...(quoteData.bill_to_state_c ? { bill_to_state_c: quoteData.bill_to_state_c } : {}),
+          ...(quoteData.bill_to_country_c ? { bill_to_country_c: quoteData.bill_to_country_c } : {}),
+          ...(quoteData.bill_to_pincode_c ? { bill_to_pincode_c: quoteData.bill_to_pincode_c } : {}),
+          ...(quoteData.ship_to_name_c ? { ship_to_name_c: quoteData.ship_to_name_c } : {}),
+          ...(quoteData.ship_to_street_c ? { ship_to_street_c: quoteData.ship_to_street_c } : {}),
+          ...(quoteData.ship_to_city_c ? { ship_to_city_c: quoteData.ship_to_city_c } : {}),
+          ...(quoteData.ship_to_state_c ? { ship_to_state_c: quoteData.ship_to_state_c } : {}),
+          ...(quoteData.ship_to_country_c ? { ship_to_country_c: quoteData.ship_to_country_c } : {}),
+          ...(quoteData.ship_to_pincode_c ? { ship_to_pincode_c: quoteData.ship_to_pincode_c } : {})
+        }]
+      };
+
+      const response = await apperClient.updateRecord('quote_c', payload);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return null;
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+
+        if (failed.length > 0) {
+          console.error(`Failed to update ${failed.length} quotes:`, JSON.stringify(failed));
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message);
+          });
+        }
+
+        return successful.length > 0 ? successful[0].data : null;
+      }
+
+      return null;
+    } catch (error) {
+      console.error("Error updating quote:", error?.response?.data?.message || error);
+      return null;
+    }
+  },
+
+  delete: async (id) => {
+    try {
+      const apperClient = getApperClient();
+      const response = await apperClient.deleteRecord('quote_c', {
+        RecordIds: [parseInt(id)]
+      });
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return { success: false };
+      }
+
+      if (response.results) {
+        const failed = response.results.filter(r => !r.success);
+
+        if (failed.length > 0) {
+          console.error(`Failed to delete ${failed.length} quotes:`, JSON.stringify(failed));
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message);
+          });
+          return { success: false };
+        }
+      }
+
+      return { success: true };
+return { success: true };
+    } catch (error) {
+      console.error("Error deleting quote:", error?.response?.data?.message || error);
       return { success: false };
     }
   }
