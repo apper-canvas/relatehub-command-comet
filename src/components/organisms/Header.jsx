@@ -15,7 +15,8 @@ const navItems = [
     { path: '/contacts', label: 'Contacts', icon: 'Users' },
     { path: '/companies', label: 'Companies', icon: 'Building2' },
     { path: '/pipeline', label: 'Pipeline', icon: 'Kanban' },
-    { path: '/quotes', label: 'Quotes', icon: 'FileText' }
+    { path: '/quotes', label: 'Quotes', icon: 'FileText' },
+    { path: '/sales-orders', label: 'Sales Orders', icon: 'ShoppingCart' }
   ];
 
   return (

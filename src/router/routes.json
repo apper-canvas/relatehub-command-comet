@@ -1,3 +1,4 @@
+[
 {
   "/": {
     "allow": {
@@ -51,7 +52,6 @@
       "redirectOnDeny": "/login"
     }
 },
-  "/quotes": {
     "allow": {
       "when": {
         "conditions": [
@@ -65,7 +65,7 @@
       "redirectOnDeny": "/login"
     }
   },
-"/quotes": {
+"/quotes",":", {
     "allow": {
       "when": {
         "conditions": [
@@ -79,7 +79,21 @@
       "redirectOnDeny": "/login"
     }
   },
-  "/sales-orders": {
+  "/sales-orders",":", {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "User must be logged in to view sales orders",
+            "rule": "authenticated"
+          }
+        ],
+        "operator": "OR"
+      },
+      "redirectOnDeny": "/login"
+    }
+  },
+  "/sales-orders",":", {
     "allow": {
       "when": {
         "conditions": [
@@ -157,4 +171,5 @@
       "excludeRedirectQuery": true
     }
   }
-}}
+}
+]
