@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react";
-import ApperIcon from "@/components/ApperIcon";
-import Button from "@/components/atoms/Button";
-import Badge from "@/components/atoms/Badge";
-import SearchBar from "@/components/molecules/SearchBar";
-import ContactDetail from "@/components/organisms/ContactDetail";
-import QuickAddModal from "@/components/organisms/QuickAddModal";
-import Loading from "@/components/ui/Loading";
-import Error from "@/components/ui/Error";
-import Empty from "@/components/ui/Empty";
+import React, { useEffect, useState } from "react";
 import { contactService } from "@/services/api/dataService";
 import { formatDistanceToNow } from "date-fns";
+import ApperIcon from "@/components/ApperIcon";
+import Badge from "@/components/atoms/Badge";
+import Button from "@/components/atoms/Button";
+import QuickAddModal from "@/components/organisms/QuickAddModal";
+import ContactDetail from "@/components/organisms/ContactDetail";
+import Loading from "@/components/ui/Loading";
+import Empty from "@/components/ui/Empty";
+import Error from "@/components/ui/Error";
+import SearchBar from "@/components/molecules/SearchBar";
 
 const Contacts = () => {
   const [contacts, setContacts] = useState([]);
@@ -73,9 +73,9 @@ const Contacts = () => {
     // Apply filters
     if (filterBy !== "all") {
       filtered = filtered.filter(contact => {
-        if (filterBy === "recent") {
-          return contact.lastContactedAt && 
-            (new Date() - new Date(contact.lastContactedAt)) < (7 * 24 * 60 * 60 * 1000); // Last 7 days
+if (filterBy === "recent") {
+          return contact.last_contacted_at_c && 
+            (new Date() - new Date(contact.last_contacted_at_c)) < (7 * 24 * 60 * 60 * 1000);
         }
         if (filterBy === "enterprise") {
           return contact.tags?.includes("Enterprise");
@@ -85,15 +85,15 @@ const Contacts = () => {
     }
 
     // Apply sorting
-    filtered.sort((a, b) => {
+filtered.sort((a, b) => {
       switch (sortBy) {
         case "name":
-          return `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`);
+          return `${a.first_name_c} ${a.last_name_c}`.localeCompare(`${b.first_name_c} ${b.last_name_c}`);
         case "company":
-          return (a.company || "").localeCompare(b.company || "");
+          return (a.company_c || "").localeCompare(b.company_c || "");
         case "recent":
-          const aDate = new Date(a.lastContactedAt || a.createdAt);
-          const bDate = new Date(b.lastContactedAt || b.createdAt);
+          const aDate = new Date(a.last_contacted_at_c || a.created_at_c);
+          const bDate = new Date(b.last_contacted_at_c || b.created_at_c);
           return bDate - aDate;
         default:
           return 0;
@@ -221,30 +221,30 @@ const Contacts = () => {
                         <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-4">
                           <ApperIcon name="User" className="w-5 h-5 text-primary" />
                         </div>
-                        <div>
+<div>
                           <div className="text-sm font-medium text-slate-900">
-                            {contact.firstName} {contact.lastName}
+                            {contact.first_name_c} {contact.last_name_c}
                           </div>
-                          <div className="text-sm text-slate-500">{contact.email}</div>
+                          <div className="text-sm text-slate-500">{contact.email_c}</div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-slate-900">{contact.company || "-"}</div>
-                      <div className="text-sm text-slate-500">{contact.title || ""}</div>
+                      <div className="text-sm text-slate-900">{contact.company_c || "-"}</div>
+                      <div className="text-sm text-slate-500">{contact.title_c || ""}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex flex-wrap gap-1">
-                        {contact.tags?.map((tag, index) => (
+{contact.tags_c?.split(',').filter(t => t.trim()).map((tag, index) => (
                           <Badge key={index} variant="primary" className="text-xs">
-                            {tag}
+                            {tag.trim()}
                           </Badge>
-                        )) || <span className="text-slate-400">-</span>}
+                        ))}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                      {contact.lastContactedAt 
-                        ? formatDistanceToNow(new Date(contact.lastContactedAt), { addSuffix: true })
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                      {contact.last_contacted_at_c 
+                        ? formatDistanceToNow(new Date(contact.last_contacted_at_c), { addSuffix: true })
                         : "Never"
                       }
                     </td>

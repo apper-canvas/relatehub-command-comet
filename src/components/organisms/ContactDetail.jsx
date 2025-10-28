@@ -95,12 +95,12 @@ const ContactDetail = ({ isOpen, onClose, contact }) => {
                     </div>
                     <div>
                       <h2 className="text-xl font-semibold text-slate-900">
-                        {contact.firstName} {contact.lastName}
+{contact.first_name_c} {contact.last_name_c}
                       </h2>
                       <p className="text-slate-600">
-                        {contact.title && contact.company 
-                          ? `${contact.title} at ${contact.company}`
-                          : contact.title || contact.company || contact.email
+                        {contact.title_c && contact.company_c 
+                          ? `${contact.title_c} at ${contact.company_c}`
+                          : contact.title_c || contact.company_c || contact.email_c
                         }
                       </p>
                     </div>
@@ -150,77 +150,75 @@ const ContactDetail = ({ isOpen, onClose, contact }) => {
                           <div>
                             <dt className="text-xs font-medium text-slate-500 uppercase tracking-wide">Email</dt>
                             <dd className="text-sm text-slate-900 mt-1">
-                              <a href={`mailto:${contact.email}`} className="text-primary hover:underline">
-                                {contact.email}
+<a href={`mailto:${contact.email_c}`} className="text-primary hover:underline">
+                                {contact.email_c}
                               </a>
                             </dd>
                           </div>
-                          {contact.phone && (
+                          {contact.phone_c && (
                             <div>
                               <dt className="text-xs font-medium text-slate-500 uppercase tracking-wide">Phone</dt>
                               <dd className="text-sm text-slate-900 mt-1">
-                                <a href={`tel:${contact.phone}`} className="text-primary hover:underline">
-                                  {contact.phone}
+                                <a href={`tel:${contact.phone_c}`} className="text-primary hover:underline">
+                                  {contact.phone_c}
                                 </a>
                               </dd>
                             </div>
                           )}
                         </dl>
                       </div>
-                      
-                      <div>
-                        <h3 className="text-sm font-medium text-slate-900 mb-3">Company Information</h3>
+
+                      <div className="border-t border-slate-200 pt-4">
                         <dl className="space-y-3">
-                          {contact.company && (
+                          {contact.company_c && (
                             <div>
                               <dt className="text-xs font-medium text-slate-500 uppercase tracking-wide">Company</dt>
-                              <dd className="text-sm text-slate-900 mt-1">{contact.company}</dd>
+                              <dd className="text-sm text-slate-900 mt-1">{contact.company_c}</dd>
                             </div>
                           )}
-                          {contact.title && (
+                          {contact.title_c && (
                             <div>
                               <dt className="text-xs font-medium text-slate-500 uppercase tracking-wide">Title</dt>
-                              <dd className="text-sm text-slate-900 mt-1">{contact.title}</dd>
+                              <dd className="text-sm text-slate-900 mt-1">{contact.title_c}</dd>
                             </div>
                           )}
                         </dl>
                       </div>
                     </div>
 
-                    {contact.tags && contact.tags.length > 0 && (
+                    {contact.tags_c && contact.tags_c.trim() && (
                       <div>
                         <h3 className="text-sm font-medium text-slate-900 mb-3">Tags</h3>
                         <div className="flex flex-wrap gap-2">
-                          {contact.tags.map((tag, index) => (
-                            <Badge key={index} variant="primary">{tag}</Badge>
+                          {contact.tags_c.split(',').filter(t => t.trim()).map((tag, index) => (
+                            <Badge key={index} variant="primary">{tag.trim()}</Badge>
                           ))}
                         </div>
                       </div>
                     )}
 
-                    {contact.notes && (
+                    {contact.notes_c && (
                       <div>
                         <h3 className="text-sm font-medium text-slate-900 mb-3">Notes</h3>
                         <p className="text-sm text-slate-600 bg-slate-50 p-4 rounded-lg">
-                          {contact.notes}
+                          {contact.notes_c}
                         </p>
                       </div>
                     )}
 
-                    <div>
-                      <h3 className="text-sm font-medium text-slate-900 mb-3">Timeline</h3>
-                      <dl className="space-y-3">
+                    <div className="border-t border-slate-200 pt-4">
+                      <dl className="grid grid-cols-2 gap-3">
                         <div>
                           <dt className="text-xs font-medium text-slate-500 uppercase tracking-wide">Created</dt>
                           <dd className="text-sm text-slate-900 mt-1">
-                            {formatDistanceToNow(new Date(contact.createdAt), { addSuffix: true })}
+                            {formatDistanceToNow(new Date(contact.created_at_c), { addSuffix: true })}
                           </dd>
                         </div>
-                        {contact.lastContactedAt && (
+                        {contact.last_contacted_at_c && (
                           <div>
                             <dt className="text-xs font-medium text-slate-500 uppercase tracking-wide">Last Contact</dt>
                             <dd className="text-sm text-slate-900 mt-1">
-                              {formatDistanceToNow(new Date(contact.lastContactedAt), { addSuffix: true })}
+                              {formatDistanceToNow(new Date(contact.last_contacted_at_c), { addSuffix: true })}
                             </dd>
                           </div>
                         )}
@@ -242,26 +240,26 @@ const ContactDetail = ({ isOpen, onClose, contact }) => {
                       />
                     ) : (
                       <div className="space-y-3">
-                        {deals.map((deal) => (
+{deals.map((deal) => (
                           <div key={deal.Id} className="bg-slate-50 rounded-lg p-4">
                             <div className="flex items-center justify-between mb-2">
-                              <h4 className="font-medium text-slate-900">{deal.title}</h4>
+                              <h4 className="font-medium text-slate-900">{deal.title_c}</h4>
                               <Badge 
                                 variant={
-                                  deal.stage === "Closed Won" ? "success" :
-                                  deal.stage === "Closed Lost" ? "error" :
+                                  deal.stage_c === "Closed Won" ? "success" :
+                                  deal.stage_c === "Closed Lost" ? "error" :
                                   "primary"
                                 }
                               >
-                                {deal.stage}
+                                {deal.stage_c}
                               </Badge>
                             </div>
                             <div className="flex items-center justify-between text-sm text-slate-600">
-                              <span>${deal.value.toLocaleString()}</span>
-                              <span>{deal.probability}% probability</span>
+                              <span>${(deal.value_c || 0).toLocaleString()}</span>
+                              <span>{deal.probability_c}% probability</span>
                             </div>
-                            {deal.notes && (
-                              <p className="text-sm text-slate-600 mt-2">{deal.notes}</p>
+                            {deal.notes_c && (
+                              <p className="text-sm text-slate-600 mt-2">{deal.notes_c}</p>
                             )}
                           </div>
                         ))}

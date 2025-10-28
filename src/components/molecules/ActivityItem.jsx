@@ -31,17 +31,17 @@ const ActivityItem = ({ activity, className }) => {
         />
       </div>
       
-      <div className="flex-1 min-w-0">
+<div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-slate-900">
-          {activity.subject}
+          {activity.subject_c}
         </p>
-        {activity.description && (
+        {activity.description_c && (
           <p className="text-sm text-slate-600 mt-1">
-            {activity.description}
+            {activity.description_c}
           </p>
         )}
         <p className="text-xs text-slate-400 mt-1">
-          {formatDistanceToNow(new Date(activity.timestamp), { addSuffix: true })}
+          {formatDistanceToNow(new Date(activity.timestamp_c), { addSuffix: true })}
         </p>
       </div>
     </div>

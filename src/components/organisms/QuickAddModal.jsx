@@ -80,21 +80,22 @@ const QuickAddModal = ({ isOpen, onClose, activeTab: initialActiveTab = "contact
     setIsSubmitting(true);
 
     try {
-      if (activeTab === "contact") {
+if (activeTab === "contact") {
         await contactService.create(contactForm);
         toast.success("Contact created successfully!");
       } else if (activeTab === "deal") {
         await dealService.create({
           ...dealForm,
-          value: parseFloat(dealForm.value) || 0,
-          probability: parseInt(dealForm.probability)
+          value_c: parseFloat(dealForm.value) || 0,
+          probability_c: parseInt(dealForm.probability)
         });
         toast.success("Deal created successfully!");
-} else if (activeTab === "activity") {
+      } else if (activeTab === "activity") {
         await activityService.create(activityForm);
+        toast.success("Activity logged successfully!");
       } else if (activeTab === "company") {
         await companyService.create(companyForm);
-        toast.success("Activity logged successfully!");
+        toast.success("Company created successfully!");
       }
       resetForms();
       if (onSuccess) onSuccess();

@@ -56,34 +56,36 @@ const handleDealCreated = async () => {
     }
   };
 
-  const getDealsByStage = (stage) => {
-    return deals.filter(deal => deal.stage === stage);
+const getDealsByStage = (stage) => {
+    return deals.filter(deal => deal.stage_c === stage);
   };
 
   const getContactById = (contactId) => {
-    return contacts.find(contact => contact.Id === contactId);
+    return contacts.find(c => c.Id === contactId);
   };
 
-  const getStageTotal = (stage) => {
-    const stageDeals = getDealsByStage(stage);
-    return stageDeals.reduce((sum, deal) => sum + deal.value, 0);
-  };
-
-  const moveDeal = async (dealId, newStage) => {
-    try {
-      await dealService.update(dealId, { stage: newStage });
-      
-      // Update local state
-      setDeals(prev => prev.map(deal => 
+const handleStageChange = async (dealId, newStage) => {
+    setDeals(prevDeals => 
+      prevDeals.map(deal => 
         deal.Id === dealId 
-          ? { ...deal, stage: newStage, stageChangedAt: new Date().toISOString() }
+          ? { ...deal, stage_c: newStage, stage_changed_at_c: new Date().toISOString() }
           : deal
-      ));
+      )
+    );
+
+    try {
+      await dealService.update(dealId, { stage_c: newStage });
       
       toast.success(`Deal moved to ${newStage}`);
     } catch (err) {
       toast.error("Failed to move deal");
+      await loadPipelineData();
     }
+  };
+
+  const getStageTotal = (stageId) => {
+    const stageDeals = getDealsByStage(stageId);
+    return stageDeals.reduce((sum, deal) => sum + (deal.value_c || 0), 0);
   };
 
   const handleEditDeal = (deal) => {
@@ -126,7 +128,7 @@ const handleDealCreated = async () => {
   }
 
   const totalDeals = deals.length;
-  const totalValue = deals.reduce((sum, deal) => sum + deal.value, 0);
+const totalValue = deals.reduce((sum, deal) => sum + (deal.value_c || 0), 0);
 
   return (
     <div className="space-y-6">

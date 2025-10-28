@@ -3,7 +3,7 @@ import Badge from "@/components/atoms/Badge";
 import { cn } from "@/utils/cn";
 
 const DealCard = ({ deal, contact, onEdit, onDelete }) => {
-  const getProbabilityColor = (probability) => {
+const getProbabilityColor = (probability) => {
     if (probability >= 75) return "border-l-success bg-success/5";
     if (probability >= 50) return "border-l-warning bg-warning/5";
     return "border-l-error bg-error/5";
@@ -20,7 +20,7 @@ const DealCard = ({ deal, contact, onEdit, onDelete }) => {
   };
 
   const daysInStage = Math.floor(
-    (new Date() - new Date(deal.stageChangedAt)) / (1000 * 60 * 60 * 24)
+    (new Date() - new Date(deal.stage_changed_at_c)) / (1000 * 60 * 60 * 24)
   );
 
 return (
@@ -33,14 +33,14 @@ return (
       {/* Header */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1 min-w-0">
-          <h3 className="font-medium text-slate-900 truncate">{deal.title}</h3>
+<h3 className="font-medium text-slate-900 truncate">{deal.title_c}</h3>
           {contact && (
             <p className="text-sm text-slate-600 truncate">
-              {contact.firstName} {contact.lastName}
+              {contact.first_name_c} {contact.last_name_c}
             </p>
           )}
         </div>
-        <div className="flex items-center space-x-1 ml-2">
+        <div className="flex items-center gap-1">
           <button
             onClick={() => onEdit && onEdit(deal)}
             className="text-slate-400 hover:text-slate-600 p-1"
@@ -56,38 +56,33 @@ return (
         </div>
       </div>
 
-      {/* Value and Probability */}
       <div className="flex items-center justify-between mb-3">
-        <span className="text-lg font-semibold text-slate-900">
-          ${deal.value.toLocaleString()}
+        <span className="text-lg font-bold text-slate-900">
+          ${(deal.value_c || 0).toLocaleString()}
         </span>
         <Badge variant="default" className="text-xs">
-          {deal.probability}%
+          {deal.probability_c}%
         </Badge>
       </div>
 
-      {/* Stage */}
-      <div className="flex items-center justify-between mb-2">
-        <Badge variant={getStageVariant(deal.stage)} className="text-xs">
-          {deal.stage}
+      <div className="mb-3">
+        <Badge variant={getStageVariant(deal.stage_c)} className="text-xs">
+          {deal.stage_c}
         </Badge>
         <span className="text-xs text-slate-500">
           {daysInStage} day{daysInStage !== 1 ? 's' : ''} in stage
         </span>
       </div>
-
-      {/* Expected Close Date */}
-      {deal.expectedCloseDate && (
+{deal.expected_close_date_c && (
         <div className="text-xs text-slate-500 flex items-center">
           <ApperIcon name="Calendar" className="w-3 h-3 mr-1" />
-          Expected: {new Date(deal.expectedCloseDate).toLocaleDateString()}
+          Expected: {new Date(deal.expected_close_date_c).toLocaleDateString()}
         </div>
       )}
 
-      {/* Notes */}
-      {deal.notes && (
+      {deal.notes_c && (
         <p className="text-sm text-slate-600 mt-2 line-clamp-2">
-          {deal.notes}
+          {deal.notes_c}
         </p>
 )}
     </div>

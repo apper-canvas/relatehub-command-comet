@@ -46,8 +46,8 @@ const Dashboard = () => {
       });
 
       // Get recent activities (last 5)
-      const sortedActivities = activities
-        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+const sortedActivities = activities
+        .sort((a, b) => new Date(b.timestamp_c) - new Date(a.timestamp_c))
         .slice(0, 5);
       
       setRecentActivities(sortedActivities);

@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
-import ApperIcon from '@/components/ApperIcon';
-import Button from '@/components/atoms/Button';
-import Badge from '@/components/atoms/Badge';
-import SearchBar from '@/components/molecules/SearchBar';
-import QuickAddModal from '@/components/organisms/QuickAddModal';
-import Loading from '@/components/ui/Loading';
-import Error from '@/components/ui/Error';
-import Empty from '@/components/ui/Empty';
-import { companyService } from '@/services/api/dataService';
-import { formatDistanceToNow } from 'date-fns';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import { companyService } from "@/services/api/dataService";
+import { formatDistanceToNow } from "date-fns";
+import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import Badge from "@/components/atoms/Badge";
+import Button from "@/components/atoms/Button";
+import QuickAddModal from "@/components/organisms/QuickAddModal";
+import Loading from "@/components/ui/Loading";
+import Empty from "@/components/ui/Empty";
+import Error from "@/components/ui/Error";
+import SearchBar from "@/components/molecules/SearchBar";
 
 function Companies() {
   const [companies, setCompanies] = useState([]);
@@ -49,28 +49,26 @@ function Companies() {
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(company =>
-        company.Name?.toLowerCase().includes(query) ||
-        company.Industry?.toLowerCase().includes(query) ||
-        company.Website?.toLowerCase().includes(query)
+company.name_c?.toLowerCase().includes(query) ||
+        company.industry_c?.toLowerCase().includes(query) ||
+        company.website_c?.toLowerCase().includes(query)
       );
     }
 
-    // Apply status filter
-    if (filterStatus !== 'all') {
+    if (filterStatus && filterStatus !== 'All') {
       filtered = filtered.filter(company =>
-        company.Status?.toLowerCase() === filterStatus.toLowerCase()
+        company.status_c?.toLowerCase() === filterStatus.toLowerCase()
       );
     }
 
-    // Apply sorting
     filtered.sort((a, b) => {
       switch (sortBy) {
         case 'newest':
-          return new Date(b.LastContact) - new Date(a.LastContact);
+          return new Date(b.last_contact_c) - new Date(a.last_contact_c);
         case 'oldest':
-          return new Date(a.LastContact) - new Date(b.LastContact);
+          return new Date(a.last_contact_c) - new Date(b.last_contact_c);
         case 'name':
-          return (a.Name || '').localeCompare(b.Name || '');
+          return (a.name_c || '').localeCompare(b.name_c || '');
         default:
           return 0;
       }
@@ -180,7 +178,7 @@ function Companies() {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-lg border border-slate-200 p-4">
+<div className="bg-white rounded-lg border border-slate-200 p-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-success/10 rounded-lg">
               <ApperIcon name="CheckCircle" size={20} className="text-success" />
@@ -188,7 +186,7 @@ function Companies() {
             <div>
               <p className="text-sm text-slate-600">Active</p>
               <p className="text-2xl font-bold text-slate-900">
-                {companies.filter(c => c.Status === 'Active').length}
+                {companies.filter(c => c.status_c === 'Active').length}
               </p>
             </div>
           </div>
@@ -196,12 +194,12 @@ function Companies() {
         <div className="bg-white rounded-lg border border-slate-200 p-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-slate-100 rounded-lg">
-              <ApperIcon name="XCircle" size={20} className="text-slate-600" />
+              <ApperIcon name="AlertCircle" size={20} className="text-slate-600" />
             </div>
             <div>
               <p className="text-sm text-slate-600">Inactive</p>
               <p className="text-2xl font-bold text-slate-900">
-                {companies.filter(c => c.Status === 'Inactive').length}
+                {companies.filter(c => c.status_c === 'Inactive').length}
               </p>
             </div>
           </div>
@@ -226,7 +224,7 @@ function Companies() {
               key={company.Id}
               className="bg-white rounded-lg border border-slate-200 p-4 hover:border-primary/50 hover:shadow-md transition-all cursor-pointer group"
             >
-              <div className="flex items-start justify-between mb-3">
+<div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-primary-50 rounded-lg group-hover:bg-primary-100 transition-colors">
                     <ApperIcon name="Building2" size={20} className="text-primary" />
@@ -235,37 +233,36 @@ function Companies() {
                     <h3 className="font-semibold text-slate-900 group-hover:text-primary transition-colors">
                       {company.Name}
                     </h3>
-                    <Badge variant={company.Status === 'Active' ? 'success' : 'secondary'}>
-                      {company.Industry || 'No Industry'}
+                    <Badge variant={company.status_c === 'Active' ? 'success' : 'secondary'}>
+                      {company.industry_c || 'No Industry'}
                     </Badge>
                   </div>
                 </div>
               </div>
-
-              <div className="space-y-2 mb-4">
-                {company.Website && (
+<div className="mt-4 space-y-2">
+                {company.website_c && (
                   <div className="flex items-center gap-2 text-sm text-slate-600">
                     <ApperIcon name="Globe" size={14} />
-                    <span className="truncate">{company.Website}</span>
+                    <span className="truncate">{company.website_c}</span>
                   </div>
                 )}
-                {company.Size && (
+                {company.size_c && (
                   <div className="flex items-center gap-2 text-sm text-slate-600">
                     <ApperIcon name="Users" size={14} />
-                    <span>{company.Size}</span>
+                    <span>{company.size_c}</span>
                   </div>
                 )}
-                {company.Revenue && (
+                {company.revenue_c && (
                   <div className="flex items-center gap-2 text-sm text-slate-600">
                     <ApperIcon name="DollarSign" size={14} />
-                    <span>{company.Revenue}</span>
+                    <span>{company.revenue_c}</span>
                   </div>
                 )}
-                {company.LastContact && (
+                {company.last_contact_c && (
                   <div className="flex items-center gap-2 text-xs text-slate-500">
                     <ApperIcon name="Clock" size={12} />
                     <span>
-                      Last contact {formatDistanceToNow(new Date(company.LastContact), { addSuffix: true })}
+                      Last contact {formatDistanceToNow(new Date(company.last_contact_c), { addSuffix: true })}
                     </span>
                   </div>
                 )}

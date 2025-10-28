@@ -52,13 +52,25 @@ function Header({ onQuickAdd }) {
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-3">
+<div className="flex items-center gap-3">
             <Button
               onClick={onQuickAdd}
               className="gap-2"
             >
               <ApperIcon name="Plus" size={16} />
               <span className="hidden sm:inline">Quick Add</span>
+            </Button>
+            <Button
+              onClick={async () => {
+                const { useAuth } = await import("@/layouts/Root");
+                const { logout } = useAuth();
+                logout();
+              }}
+              variant="outline"
+              className="gap-2 border-red-200 text-red-600 hover:bg-red-50"
+            >
+              <ApperIcon name="LogOut" size={16} />
+              <span className="hidden sm:inline">Logout</span>
             </Button>
             
             {/* Mobile Menu Button */}
