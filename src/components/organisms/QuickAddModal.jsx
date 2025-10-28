@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { activityService, companyService, contactService, dealService } from "@/services/api/dataService";
@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
 import FormField from "@/components/molecules/FormField";
-
 const QuickAddModal = ({ isOpen, onClose, activeTab: initialActiveTab = "contact", onSuccess, editData = null, editMode = false }) => {
   const [activeTab, setActiveTab] = useState(initialActiveTab);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,6 +42,20 @@ const [companyForm, setCompanyForm] = useState({
     revenue_c: "",
     status_c: "Active"
   });
+
+  // Update form when editData changes (for edit mode)
+  useEffect(() => {
+    if (editMode && editData && activeTab === "deal") {
+      setDealForm({
+        contactId: editData?.contact_id_c?.Id || editData?.contact_id_c || "",
+        title: editData?.title_c || "",
+        value: editData?.value_c || "",
+        probability: editData?.probability_c || "50",
+        stage: editData?.stage_c || "Lead",
+        notes: editData?.notes_c || ""
+      });
+    }
+  }, [editData, editMode, activeTab]);
 
 const resetForms = () => {
     setContactForm({
