@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { activityService, companyService, contactService, dealService } from "@/services/api/dataService";
@@ -19,7 +19,7 @@ const QuickAddModal = ({ isOpen, onClose, activeTab: initialActiveTab = "contact
     title: ""
   });
 
-  const [dealForm, setDealForm] = useState({
+const [dealForm, setDealForm] = useState({
     contactId: editData?.contact_id_c?.Id || editData?.contact_id_c || "",
     title: editData?.title_c || "",
     value: editData?.value_c || "",
@@ -27,6 +27,30 @@ const QuickAddModal = ({ isOpen, onClose, activeTab: initialActiveTab = "contact
     stage: editData?.stage_c || "Lead",
     notes: editData?.notes_c || ""
   });
+
+  // Sync dealForm with editData when it changes
+  useEffect(() => {
+    if (editMode && editData) {
+      setDealForm({
+        contactId: editData?.contact_id_c?.Id || editData?.contact_id_c || "",
+        title: editData?.title_c || "",
+        value: editData?.value_c || "",
+        probability: editData?.probability_c || "50",
+        stage: editData?.stage_c || "Lead",
+        notes: editData?.notes_c || ""
+      });
+    } else if (!editMode) {
+      // Reset to default values when switching to create mode
+      setDealForm({
+        contactId: "",
+        title: "",
+        value: "",
+        probability: "50",
+        stage: "Lead",
+        notes: ""
+      });
+    }
+  }, [editData, editMode]);
 
   const [activityForm, setActivityForm] = useState({
     contactId: "",
