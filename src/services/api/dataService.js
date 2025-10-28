@@ -922,9 +922,8 @@ export const activityService = {
 
       return { success: true };
     } catch (error) {
-      console.error("Error deleting activity:", error?.response?.data?.message || error);
+console.error("Error deleting activity:", error?.response?.data?.message || error);
       return { success: false };
-return { success: false };
     }
   }
 };
@@ -1150,8 +1149,6 @@ export const quoteService = {
           return { success: false };
         }
       }
-
-      return { success: true };
 return { success: true };
     } catch (error) {
       console.error("Error deleting quote:", error?.response?.data?.message || error);
