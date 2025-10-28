@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { activityService, companyService, contactService, dealService } from "@/services/api/dataService";
+import { activityService, companyService, contactService, dealService, salesOrderService } from "@/services/api/dataService";
 import { toast } from "react-toastify";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
+import Label from "@/components/atoms/Label";
 import FormField from "@/components/molecules/FormField";
 
 const QuickAddModal = ({ isOpen, onClose, activeTab: initialActiveTab = "contact", onSuccess, editData = null, editMode = false, companies = [], contacts = [], deals = [] }) => {
@@ -67,7 +68,15 @@ const [companyForm, setCompanyForm] = useState({
     revenue_c: "",
     status_c: "Active"
   });
-
+const [salesOrderForm, setSalesOrderForm] = useState({
+    order_number_c: "",
+    customer_name_c: "",
+    order_date_c: "",
+    total_amount_c: "",
+    status_c: "Pending",
+    notes_c: "",
+    delivery_date_c: ""
+  });
   const [quoteForm, setQuoteForm] = useState({
     company_id_c: "",
     contact_id_c: "",
@@ -91,6 +100,15 @@ const [companyForm, setCompanyForm] = useState({
   });
 
 const resetForms = () => {
+    setSalesOrderForm({
+      order_number_c: "",
+      customer_name_c: "",
+      order_date_c: "",
+      total_amount_c: "",
+      status_c: "Pending",
+      notes_c: "",
+      delivery_date_c: ""
+    });
     setContactForm({
       firstName: "",
       lastName: "",
@@ -174,10 +192,13 @@ const handleSubmit = async (e) => {
       } else if (activeTab === "company") {
         await companyService.create(companyForm);
         toast.success("Company created successfully!");
-      } else if (activeTab === "quote") {
+} else if (activeTab === "quote") {
         const { quoteService } = await import('@/services/api/dataService');
         await quoteService.create(quoteForm);
         toast.success("Quote created successfully!");
+      } else if (activeTab === "salesOrder") {
+        await salesOrderService.create(salesOrderForm);
+        toast.success("Sales order created successfully!");
       }
       
       // Call onSuccess before closing to refresh parent component data
@@ -197,7 +218,8 @@ const tabs = [
     { id: "deal", label: "Deal", icon: "DollarSign" },
     { id: "activity", label: "Activity", icon: "Calendar" },
     { id: "company", label: "Company", icon: "Building2" },
-    { id: "quote", label: "Quote", icon: "FileText" }
+    { id: "quote", label: "Quote", icon: "FileText" },
+    { id: "salesOrder", label: "Sales Order", icon: "FileText" }
   ];
 
 if (!isOpen) return null;
@@ -726,7 +748,87 @@ className="flex w-full rounded-md border border-slate-300 bg-white px-3 py-2 tex
                         </div>
                       </div>
                     )}
+{/* Sales Order Form */}
+          {activeTab === "salesOrder" && (
+            <div className="space-y-4">
+              <FormField
+                label="Order Number"
+                required
+                value={salesOrderForm.order_number_c}
+                onChange={(e) =>
+                  setSalesOrderForm({ ...salesOrderForm, order_number_c: e.target.value })
+                }
+                placeholder="Enter order number"
+              />
 
+              <FormField
+                label="Customer Name"
+                required
+                value={salesOrderForm.customer_name_c}
+                onChange={(e) =>
+                  setSalesOrderForm({ ...salesOrderForm, customer_name_c: e.target.value })
+                }
+                placeholder="Enter customer name"
+              />
+
+              <FormField
+                label="Order Date"
+                type="date"
+                required
+                value={salesOrderForm.order_date_c}
+                onChange={(e) =>
+                  setSalesOrderForm({ ...salesOrderForm, order_date_c: e.target.value })
+                }
+              />
+
+              <FormField
+                label="Total Amount"
+                type="number"
+                required
+                value={salesOrderForm.total_amount_c}
+                onChange={(e) =>
+                  setSalesOrderForm({ ...salesOrderForm, total_amount_c: e.target.value })
+                }
+                placeholder="0.00"
+              />
+
+              <div>
+                <Label>Status</Label>
+                <select
+                  value={salesOrderForm.status_c}
+                  onChange={(e) =>
+                    setSalesOrderForm({ ...salesOrderForm, status_c: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="Processing">Processing</option>
+                  <option value="Shipped">Shipped</option>
+                  <option value="Delivered">Delivered</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+
+              <FormField
+                label="Delivery Date"
+                type="date"
+                value={salesOrderForm.delivery_date_c}
+                onChange={(e) =>
+                  setSalesOrderForm({ ...salesOrderForm, delivery_date_c: e.target.value })
+                }
+              />
+
+              <FormField
+                label="Notes"
+                value={salesOrderForm.notes_c}
+                onChange={(e) =>
+                  setSalesOrderForm({ ...salesOrderForm, notes_c: e.target.value })
+                }
+                placeholder="Add any notes..."
+                rows={3}
+              />
+            </div>
+          )}
                     {/* Actions */}
                     <div className="flex justify-end space-x-3 pt-4">
                       <Button
