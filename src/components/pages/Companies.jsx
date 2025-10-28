@@ -81,9 +81,13 @@ company.name_c?.toLowerCase().includes(query) ||
     setIsQuickAddOpen(true);
   }
 
-  async function handleCloseQuickAdd() {
-    setIsQuickAddOpen(false);
+async function handleCompanySuccess() {
     await loadCompanies();
+    setIsQuickAddOpen(false);
+  }
+
+  function handleModalClose() {
+    setIsQuickAddOpen(false);
   }
 
   async function handleDeleteCompany(id, name) {
@@ -299,12 +303,12 @@ onClick={(e) => {
         </div>
       )}
 
-      {/* Quick Add Modal */}
+{/* Quick Add Modal */}
       <QuickAddModal
         isOpen={isQuickAddOpen}
-        onClose={handleCloseQuickAdd}
+        onClose={handleModalClose}
         activeTab="company"
-        onSuccess={handleCloseQuickAdd}
+        onSuccess={handleCompanySuccess}
       />
     </div>
   );
