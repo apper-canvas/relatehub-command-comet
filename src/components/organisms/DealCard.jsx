@@ -1,8 +1,16 @@
+import { useDrag } from "react-dnd";
 import ApperIcon from "@/components/ApperIcon";
 import Badge from "@/components/atoms/Badge";
 import { cn } from "@/utils/cn";
 
 const DealCard = ({ deal, contact, onEdit, onDelete }) => {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: 'DEAL',
+    item: { deal },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
 const getProbabilityColor = (probability) => {
     if (probability >= 75) return "border-l-success bg-success/5";
     if (probability >= 50) return "border-l-warning bg-warning/5";
@@ -25,10 +33,12 @@ const getProbabilityColor = (probability) => {
 
 return (
     <div
+      ref={drag}
       className={cn(
-        "bg-white rounded-lg p-4 card-shadow hover:card-shadow-hover transition-all duration-200 border-l-4",
+        "bg-white rounded-lg p-4 card-shadow hover:card-shadow-hover transition-all duration-200 border-l-4 cursor-grab",
         getProbabilityColor(deal.probability)
       )}
+      style={{ opacity: isDragging ? 0.5 : 1 }}
     >
       {/* Header */}
       <div className="flex items-start justify-between mb-3">

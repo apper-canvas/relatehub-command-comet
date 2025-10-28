@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { DndProvider, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { contactService, dealService } from "@/services/api/dataService";
 import { toast } from "react-toastify";
 import ApperIcon from "@/components/ApperIcon";
@@ -175,56 +177,29 @@ actionLabel="Add Deal"
           onAction={handleAddDeal}
         />
 ) : (
-        <div className="overflow-x-auto">
-          <div className="flex gap-6 pb-4 min-w-max">
-            {stages.map((stage) => {
-              const stageDeals = getDealsByStage(stage.id);
-              const stageTotal = getStageTotal(stage.id);
+        <DndProvider backend={HTML5Backend}>
+          <div className="overflow-x-auto">
+            <div className="flex gap-6 pb-4 min-w-max">
+              {stages.map((stage) => {
+                const stageDeals = getDealsByStage(stage.id);
+                const stageTotal = getStageTotal(stage.id);
 
-              return (
-                <div key={stage.id} className="flex-shrink-0 w-80">
-                  <div className={`${stage.color} rounded-lg p-4`}>
-                    {/* Stage Header */}
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-semibold text-slate-900">{stage.name}</h3>
-                      <div className="text-xs text-slate-600">
-                        {stageDeals.length} deals
-                      </div>
-                    </div>
-
-                    {/* Stage Total */}
-                    <div className="text-sm text-slate-600 mb-4">
-                      Total: ${stageTotal.toLocaleString()}
-                    </div>
-
-                    {/* Deal Cards */}
-                    <div className="space-y-3 max-h-[70vh] overflow-y-auto">
-                      {stageDeals.length === 0 ? (
-                        <div className="text-center py-8 text-slate-400">
-                          <ApperIcon name="Plus" className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                          <p className="text-sm">Drop deals here</p>
-                        </div>
-                      ) : (
-                        stageDeals.map((deal) => {
-                          const contact = getContactById(deal.contactId);
-                          return (
-                            <DealCard
-                              key={deal.Id}
-                              deal={deal}
-                              contact={contact}
-                              onEdit={handleEditDeal}
-                              onDelete={handleDeleteDeal}
-                            />
-                          );
-                        })
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                return (
+                  <StageColumn
+                    key={stage.id}
+                    stage={stage}
+                    stageDeals={stageDeals}
+                    stageTotal={stageTotal}
+                    getContactById={getContactById}
+                    handleStageChange={handleStageChange}
+                    handleEditDeal={handleEditDeal}
+                    handleDeleteDeal={handleDeleteDeal}
+                  />
+                );
+              })}
+            </div>
           </div>
-        </div>
+        </DndProvider>
       )}
 
 <QuickAddModal 
@@ -241,5 +216,76 @@ actionLabel="Add Deal"
     </div>
   );
 };
+
+// Stage Column Component with Drop Zone
+const StageColumn = ({ 
+  stage, 
+  stageDeals, 
+  stageTotal, 
+  getContactById, 
+  handleStageChange,
+  handleEditDeal,
+  handleDeleteDeal 
+}) => {
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: 'DEAL',
+    drop: (item) => {
+      if (item.deal.stage_c !== stage.id) {
+        handleStageChange(item.deal.Id, stage.id);
+      }
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
+  }));
+
+  return (
+    <div ref={drop} className="flex-shrink-0 w-80">
+      <div 
+        className={`${stage.color} rounded-lg p-4 transition-all ${
+          isOver ? 'ring-2 ring-primary ring-offset-2' : ''
+        }`}
+      >
+        {/* Stage Header */}
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-slate-900">{stage.name}</h3>
+          <div className="text-xs text-slate-600">
+            {stageDeals.length} deals
+          </div>
+        </div>
+
+        {/* Stage Total */}
+        <div className="text-sm text-slate-600 mb-4">
+          Total: ${stageTotal.toLocaleString()}
+        </div>
+
+        {/* Deal Cards */}
+        <div className="space-y-3 max-h-[70vh] overflow-y-auto">
+          {stageDeals.length === 0 ? (
+            <div className="text-center py-8 text-slate-400">
+              <ApperIcon name="Plus" className="w-8 h-8 mx-auto mb-2 opacity-50" />
+              <p className="text-sm">Drop deals here</p>
+            </div>
+          ) : (
+            stageDeals.map((deal) => {
+              const contact = getContactById(deal.contactId);
+              return (
+                <DealCard
+                  key={deal.Id}
+                  deal={deal}
+                  contact={contact}
+                  onEdit={handleEditDeal}
+                  onDelete={handleDeleteDeal}
+                />
+              );
+            })
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Import useDrop for StageColumn
 
 export default Pipeline;
