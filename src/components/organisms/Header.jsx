@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "@/layouts/Root";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
 import { cn } from "@/utils/cn";
 
 function Header({ onQuickAdd }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { logout } = useAuth();
 
   const navItems = [
     { path: '/', label: 'Dashboard', icon: 'LayoutDashboard' },
@@ -61,9 +63,7 @@ function Header({ onQuickAdd }) {
               <span className="hidden sm:inline">Quick Add</span>
             </Button>
             <Button
-              onClick={async () => {
-                const { useAuth } = await import("@/layouts/Root");
-                const { logout } = useAuth();
+onClick={() => {
                 logout();
               }}
               variant="outline"
